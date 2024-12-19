@@ -13,5 +13,10 @@ struct PrintableBingoOfflineApp: App {
         WindowGroup {
             ContentView()
         }
+        #if os(macOS)
+        Settings {
+            SettingsView()
+        }
+        #endif
     }
 }

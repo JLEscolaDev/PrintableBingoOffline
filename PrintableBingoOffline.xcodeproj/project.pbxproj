@@ -6,7 +6,14 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		78650DCD2D14288F00AEF746 /* Snow.sks in Resources */ = {isa = PBXBuildFile; fileRef = 78650DCC2D14288F00AEF746 /* Snow.sks */; };
+		78650DCE2D14288F00AEF746 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 78650DCB2D14288F00AEF746 /* Assets.xcassets */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
+		78650DCB2D14288F00AEF746 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		78650DCC2D14288F00AEF746 /* Snow.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Snow.sks; sourceTree = "<group>"; };
 		78EA68DB2D12CD9B006EBE8D /* PrintableBingoOffline.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PrintableBingoOffline.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -32,6 +39,8 @@
 		78EA68D22D12CD9B006EBE8D = {
 			isa = PBXGroup;
 			children = (
+				78650DCB2D14288F00AEF746 /* Assets.xcassets */,
+				78650DCC2D14288F00AEF746 /* Snow.sks */,
 				78EA68DD2D12CD9B006EBE8D /* PrintableBingoOffline */,
 				78EA68DC2D12CD9B006EBE8D /* Products */,
 			);
@@ -109,6 +118,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				78650DCD2D14288F00AEF746 /* Snow.sks in Resources */,
+				78650DCE2D14288F00AEF746 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
