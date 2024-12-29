@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Ruta a la carpeta donde están los archivos
-DIRECTORIO="./Resources/Voice/Numbers"
+# Ruta absoluta a la carpeta donde están los archivos
+DIRECTORIO="/Users/jle/projects/Projects/PrintableBingoOffline/PrintableBingoOffline/Resources/Voice/DirtyComments"
 
 # Verificar si la carpeta existe
 if [ ! -d "$DIRECTORIO" ]; then
@@ -11,6 +11,12 @@ fi
 
 # Recorrer todos los archivos .mp3 en la carpeta
 for archivo in "$DIRECTORIO"/*.mp3; do
+    # Verificar si existen archivos
+    if [ ! -e "$archivo" ]; then
+        echo "No se encontraron archivos .mp3 en el directorio $DIRECTORIO."
+        exit 1
+    fi
+
     # Obtener el nombre base del archivo sin la ruta ni la extensión
     nombre_base=$(basename "$archivo" .mp3)
     
@@ -23,4 +29,3 @@ for archivo in "$DIRECTORIO"/*.mp3; do
 done
 
 echo "Todos los archivos han sido renombrados correctamente."
-

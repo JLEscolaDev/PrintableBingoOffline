@@ -1,0 +1,1725 @@
+{
+    "numbers": {
+        "1": {
+            "audio": {
+                "comments": [
+                    "1-Comment",
+                    "1.1-Comment"
+                ],
+                "dirty": [
+                    "1-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "El galán",
+                    "El pequeño"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "2": {
+            "audio": {
+                "comments": [
+                    "2-Comment",
+                    "2.1-Comment"
+                ],
+                "dirty": [
+                    "2-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "El patito",
+                    "El sol"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "3": {
+            "audio": {
+                "comments": [
+                    "3-Comment"
+                ],
+                "dirty": [
+                    "3-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "San Cono, el Santo de la suerte"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "4": {
+            "audio": {
+                "comments": [
+                    "4-Comment"
+                ],
+                "dirty": [
+                    "4-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "La cama"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "5": {
+            "audio": {
+                "comments": [
+                    "5-Comment",
+                    "5.1-Comment"
+                ],
+                "dirty": [
+                    "5-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "El galo",
+                    "La espina"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "6": {
+            "audio": {
+                "comments": [
+                    "6-Comment",
+                    "6.1-Comment"
+                ],
+                "dirty": [
+                    "6-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "El perro",
+                    "El corazón"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "7": {
+            "audio": {
+                "comments": [
+                    "7-Comment",
+                    "7.1-Comment",
+                    "7.2-Comment"
+                ],
+                "dirty": [
+                    "7-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "El revólver",
+                    "La pipa",
+                    "La muleta"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "8": {
+            "audio": {
+                "comments": [
+                    "8-Comment",
+                    "8.1-Comment",
+                    "8.2-Comment"
+                ],
+                "dirty": [
+                    "8-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "El incendio",
+                    "La dama",
+                    "La señora gorda"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "9": {
+            "audio": {
+                "comments": [
+                    "9-Comment",
+                    "9.1-Comment"
+                ],
+                "dirty": [
+                    "9-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "El zapato",
+                    "El arroyo"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "10": {
+            "audio": {
+                "comments": [
+                    "10-Comment",
+                    "10.1-Comment"
+                ],
+                "dirty": [
+                    "10-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "La rosa",
+                    "El cañón"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "11": {
+            "audio": {
+                "comments": [
+                    "11-Comment",
+                    "11.1-Comment",
+                    "11.2-Comment"
+                ],
+                "dirty": [
+                    "11-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "Las banderillas",
+                    "El minero",
+                    "Los soldaditos"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "12": {
+            "audio": {
+                "comments": [
+                    "12-Comment"
+                ],
+                "dirty": [
+                    "12-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "El soldado"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "13": {
+            "audio": {
+                "comments": [
+                    "13-Comment",
+                    "13.1-Comment"
+                ],
+                "dirty": [
+                    "13-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "La mala pata",
+                    "El número de la mala suerte"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "14": {
+            "audio": {
+                "comments": [
+                    "14-Comment",
+                    "14.1-Comment"
+                ],
+                "dirty": [
+                    "14-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "El borracho",
+                    "La cerveza"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "15": {
+            "audio": {
+                "comments": [
+                    "15-Comment"
+                ],
+                "dirty": [
+                    "15-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "La niña bonita"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "16": {
+            "audio": {
+                "comments": [
+                    "16-Comment",
+                    "16.1-Comment"
+                ],
+                "dirty": [
+                    "16-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "El anillo",
+                    "La guitarra"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "17": {
+            "audio": {
+                "comments": [
+                    "17-Comment",
+                    "17.1-Comment"
+                ],
+                "dirty": [
+                    "17-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "La desgracia",
+                    "El barco de vela"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "18": {
+            "audio": {
+                "comments": [
+                    "18-Comment",
+                    "18.1-Comment",
+                    "18.2-Comment"
+                ],
+                "dirty": [
+                    "18-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "La sangre",
+                    "Los ojos",
+                    "El ramillete"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "19": {
+            "audio": {
+                "comments": [
+                    "19-Comment",
+                    "19.1-Comment"
+                ],
+                "dirty": [
+                    "19-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "San José",
+                    "El Correo para Cuba"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "20": {
+            "audio": {
+                "comments": [
+                    "20-Comment",
+                    "20.1-Comment"
+                ],
+                "dirty": [
+                    "20-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "La fiesta",
+                    "El tío del queso"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "21": {
+            "audio": {
+                "comments": [
+                    "21-Comment",
+                    "21.1-Comment"
+                ],
+                "dirty": [
+                    "21-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "La mujer",
+                    "La primavera"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "22": {
+            "audio": {
+                "comments": [
+                    "22-Comment"
+                ],
+                "dirty": [
+                    "22-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "Los dos patitos"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "23": {
+            "audio": {
+                "comments": [
+                    "23-Comment",
+                    "23.1-Comment"
+                ],
+                "dirty": [
+                    "23-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "El cocinero",
+                    "El melón"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "24": {
+            "audio": {
+                "comments": [
+                    "24-Comment",
+                    "24.1-Comment"
+                ],
+                "dirty": [
+                    "24-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "El caballo",
+                    "Nochebuena"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "25": {
+            "audio": {
+                "comments": [
+                    "25-Comment"
+                ],
+                "dirty": [
+                    "25-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "Navidad"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "26": {
+            "audio": {
+                "comments": [
+                    "26-Comment",
+                    "26.1-Comment"
+                ],
+                "dirty": [
+                    "26-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "La misa",
+                    "Los pollos"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "27": {
+            "audio": {
+                "comments": [
+                    "27-Comment",
+                    "27.1-Comment",
+                    "27.2-Comment"
+                ],
+                "dirty": [
+                    "27-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "El peine",
+                    "La pajarita",
+                    "La pajarera"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "28": {
+            "audio": {
+                "comments": [
+                    "28-Comment",
+                    "28.1-Comment"
+                ],
+                "dirty": [
+                    "28-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "El cerro",
+                    "Alicante"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "29": {
+            "audio": {
+                "comments": [
+                    "29-Comment",
+                    "29.1-Comment"
+                ],
+                "dirty": [
+                    "29-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "San Pedro",
+                    "El viaje"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "30": {
+            "audio": {
+                "comments": [
+                    "30-Comment",
+                    "30.1-Comment"
+                ],
+                "dirty": [
+                    "30-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "Santa Rosa",
+                    "El león"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "31": {
+            "audio": {
+                "comments": [
+                    "31-Comment",
+                    "31.1-Comment"
+                ],
+                "dirty": [
+                    "31-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "La luz",
+                    "Los caballos"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "32": {
+            "audio": {
+                "comments": [
+                    "32-Comment"
+                ],
+                "dirty": [
+                    "32-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "El dinero"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "33": {
+            "audio": {
+                "comments": [
+                    "33-Comment"
+                ],
+                "dirty": [
+                    "33-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "La edad de Cristo"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "34": {
+            "audio": {
+                "comments": [
+                    "34-Comment",
+                    "34.1-Comment"
+                ],
+                "dirty": [
+                    "34-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "La cabeza",
+                    "El garrote"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "35": {
+            "audio": {
+                "comments": [
+                    "35-Comment",
+                    "35.1-Comment"
+                ],
+                "dirty": [
+                    "35-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "El pajarito",
+                    "El fuego"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "36": {
+            "audio": {
+                "comments": [
+                    "36-Comment",
+                    "36.1-Comment"
+                ],
+                "dirty": [
+                    "36-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "La castaña",
+                    "La sangre"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "37": {
+            "audio": {
+                "comments": [
+                    "37-Comment",
+                    "37.1-Comment"
+                ],
+                "dirty": [
+                    "37-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "Los eucaliptos",
+                    "La espada"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "38": {
+            "audio": {
+                "comments": [
+                    "38-Comment",
+                    "38.1-Comment"
+                ],
+                "dirty": [
+                    "38-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "Las piedras",
+                    "El perro"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "39": {
+            "audio": {
+                "comments": [
+                    "39-Comment",
+                    "39.1-Comment"
+                ],
+                "dirty": [
+                    "39-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "La lluvia",
+                    "El toro"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "40": {
+            "audio": {
+                "comments": [
+                    "40-Comment"
+                ],
+                "dirty": [
+                    "40-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "El cura"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "41": {
+            "audio": {
+                "comments": [
+                    "41-Comment"
+                ],
+                "dirty": [
+                    "41-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "El cuchillo"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "42": {
+            "audio": {
+                "comments": [
+                    "42-Comment"
+                ],
+                "dirty": [
+                    "42-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "Las zapatillas"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "43": {
+            "audio": {
+                "comments": [
+                    "43-Comment",
+                    "43.1-Comment"
+                ],
+                "dirty": [
+                    "43-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "El balcón",
+                    "La corona"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "44": {
+            "audio": {
+                "comments": [
+                    "44-Comment",
+                    "44.1-Comment"
+                ],
+                "dirty": [
+                    "44-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "La cárcel",
+                    "Los tacones"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "45": {
+            "audio": {
+                "comments": [
+                    "45-Comment"
+                ],
+                "dirty": [
+                    "45-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "El vino"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "46": {
+            "audio": {
+                "comments": [
+                    "46-Comment",
+                    "46.1-Comment"
+                ],
+                "dirty": [
+                    "46-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "Los tomates",
+                    "El sombrero"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "47": {
+            "audio": {
+                "comments": [
+                    "47-Comment"
+                ],
+                "dirty": [
+                    "47-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "El muerto"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "48": {
+            "audio": {
+                "comments": [
+                    "48-Comment",
+                    "48.1-Comment",
+                    "48.2-Comment"
+                ],
+                "dirty": [
+                    "48-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "El borrego",
+                    "La negra",
+                    "El muerto que habla"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "49": {
+            "audio": {
+                "comments": [
+                    "49-Comment"
+                ],
+                "dirty": [
+                    "49-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "La carne"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "50": {
+            "audio": {
+                "comments": [
+                    "50-Comment"
+                ],
+                "dirty": [
+                    "50-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "El pan"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "51": {
+            "audio": {
+                "comments": [
+                    "51-Comment"
+                ],
+                "dirty": [
+                    "51-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "El serrucho"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "52": {
+            "audio": {
+                "comments": [
+                    "52-Comment"
+                ],
+                "dirty": [
+                    "52-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "La madre y el hijo"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "53": {
+            "audio": {
+                "comments": [
+                    "53-Comment"
+                ],
+                "dirty": [
+                    "53-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "El barco"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "54": {
+            "audio": {
+                "comments": [
+                    "54-Comment"
+                ],
+                "dirty": [
+                    "54-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "La vaca"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "55": {
+            "audio": {
+                "comments": [
+                    "55-Comment"
+                ],
+                "dirty": [
+                    "55-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "Los civiles (Guardia Civil)"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "56": {
+            "audio": {
+                "comments": [
+                    "56-Comment"
+                ],
+                "dirty": [
+                    "56-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "La caída"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "57": {
+            "audio": {
+                "comments": [
+                    "57-Comment"
+                ],
+                "dirty": [
+                    "57-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "El jorobado"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "58": {
+            "audio": {
+                "comments": [
+                    "58-Comment"
+                ],
+                "dirty": [
+                    "58-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "El ahogado"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "59": {
+            "audio": {
+                "comments": [
+                    "59-Comment"
+                ],
+                "dirty": [
+                    "59-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "Las plantas"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "60": {
+            "audio": {
+                "comments": [
+                    "60-Comment"
+                ],
+                "dirty": [
+                    "60-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "La virgen"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "61": {
+            "audio": {
+                "comments": [
+                    "61-Comment"
+                ],
+                "dirty": [
+                    "61-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "La escopeta"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "62": {
+            "audio": {
+                "comments": [
+                    "62-Comment"
+                ],
+                "dirty": [
+                    "62-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "La inundación"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "63": {
+            "audio": {
+                "comments": [
+                    "63-Comment"
+                ],
+                "dirty": [
+                    "63-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "El casamiento"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "64": {
+            "audio": {
+                "comments": [
+                    "64-Comment"
+                ],
+                "dirty": [
+                    "64-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "El llanto"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "65": {
+            "audio": {
+                "comments": [
+                    "65-Comment"
+                ],
+                "dirty": [
+                    "65-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "El cazador"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "66": {
+            "audio": {
+                "comments": [
+                    "66-Comment"
+                ],
+                "dirty": [
+                    "66-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "La lombriz"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "67": {
+            "audio": {
+                "comments": [
+                    "67-Comment"
+                ],
+                "dirty": [
+                    "67-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "La mordida"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "68": {
+            "audio": {
+                "comments": [
+                    "68-Comment"
+                ],
+                "dirty": [
+                    "68-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "Los sobrinos"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "69": {
+            "audio": {
+                "comments": [
+                    "69-Comment"
+                ],
+                "dirty": [
+                    "69-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "Los vicios"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "70": {
+            "audio": {
+                "comments": [
+                    "70-Comment",
+                    "70.1-Comment"
+                ],
+                "dirty": [
+                    "70-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "Los muertos",
+                    "El sueño"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "71": {
+            "audio": {
+                "comments": [
+                    "71-Comment",
+                    "71.1-Comment"
+                ],
+                "dirty": [
+                    "71-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "El maestro",
+                    "El excremento"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "72": {
+            "audio": {
+                "comments": [
+                    "72-Comment"
+                ],
+                "dirty": [
+                    "72-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "La sorpresa"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "73": {
+            "audio": {
+                "comments": [
+                    "73-Comment"
+                ],
+                "dirty": [
+                    "73-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "El hospital"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "74": {
+            "audio": {
+                "comments": [
+                    "74-Comment"
+                ],
+                "dirty": [
+                    "74-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "La escalera"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "75": {
+            "audio": {
+                "comments": [
+                    "75-Comment"
+                ],
+                "dirty": [
+                    "75-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "Los besos"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "76": {
+            "audio": {
+                "comments": [
+                    "76-Comment"
+                ],
+                "dirty": [
+                    "76-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "Las llamas"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "77": {
+            "audio": {
+                "comments": [
+                    "77-Comment"
+                ],
+                "dirty": [
+                    "77-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "Las dos banderas"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "78": {
+            "audio": {
+                "comments": [
+                    "78-Comment"
+                ],
+                "dirty": [
+                    "78-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "La ramera"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "79": {
+            "audio": {
+                "comments": [
+                    "79-Comment"
+                ],
+                "dirty": [
+                    "79-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "El ladrón"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "80": {
+            "audio": {
+                "comments": [
+                    "80-Comment"
+                ],
+                "dirty": [
+                    "80-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "La bocha"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "81": {
+            "audio": {
+                "comments": [
+                    "81-Comment"
+                ],
+                "dirty": [
+                    "81-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "Las flores"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "82": {
+            "audio": {
+                "comments": [
+                    "82-Comment",
+                    "82.1-Comment"
+                ],
+                "dirty": [
+                    "82-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "La pelea",
+                    "El jarro"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "83": {
+            "audio": {
+                "comments": [
+                    "83-Comment"
+                ],
+                "dirty": [
+                    "83-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "El mal tiempo"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "84": {
+            "audio": {
+                "comments": [
+                    "84-Comment"
+                ],
+                "dirty": [
+                    "84-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "La iglesia"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "85": {
+            "audio": {
+                "comments": [
+                    "85-Comment"
+                ],
+                "dirty": [
+                    "85-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "La linterna"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "86": {
+            "audio": {
+                "comments": [
+                    "86-Comment"
+                ],
+                "dirty": [
+                    "86-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "El humo"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "87": {
+            "audio": {
+                "comments": [
+                    "87-Comment"
+                ],
+                "dirty": [
+                    "87-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "Los piojos"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "88": {
+            "audio": {
+                "comments": [
+                    "88-Comment",
+                    "88.1-Comment"
+                ],
+                "dirty": [
+                    "88-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "Las calabazas",
+                    "Las gordas"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "89": {
+            "audio": {
+                "comments": [
+                    "89-Comment",
+                    "89.1-Comment"
+                ],
+                "dirty": [
+                    "89-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "La rata",
+                    "La gamba"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        },
+        "90": {
+            "audio": {
+                "comments": [
+                    "90-Comment"
+                ],
+                "dirty": [
+                    "90-Dirty-Comment"
+                ]
+            },
+            "text": {
+                "comments": [
+                    "El abuelo"
+                ],
+                "dirty": [
+                    "Te reviento el agujero."
+                ]
+            }
+        }
+    },
+    "genericComments": {
+        "spanish": [
+            "¡Atento que te puede tocar!",
+            "¡A ver si esta vez tienes suerte!",
+            "¡No te quedes atrás, apunta!",
+            "¡Se acerca el premio!",
+            "¡Esta puede ser la tuya!"
+        ]
+    }
+}
