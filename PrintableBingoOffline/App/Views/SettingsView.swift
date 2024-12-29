@@ -54,6 +54,12 @@ class SettingsManager {
             UserDefaults.standard.set(isMusicEnabled, forKey: "isMusicEnabled")
         }
     }
+    
+    var musicVolume: Float = UserDefaults.standard.float(forKey: "musicVolume") {
+        didSet {
+            UserDefaults.standard.set(musicVolume, forKey: "musicVolume")
+        }
+    }
 
     // MARK: - Init privado
     private init() {
@@ -65,6 +71,9 @@ class SettingsManager {
         }
         if UserDefaults.standard.object(forKey: "isMusicEnabled") == nil {
             isMusicEnabled = true
+        }
+        if UserDefaults.standard.object(forKey: "musicVolume") == nil {
+            musicVolume = 0.5
         }
     }
 }
@@ -98,7 +107,7 @@ struct SettingsView: View {
             Section(header: Text("Música de Fondo")) {
                 Toggle("Música", isOn: $settings.isMusicEnabled)
                     .toggleStyle(SwitchToggleStyle()) // Fuerza el estilo de switch verde
-                    .onChange(of: settings.isMusicEnabled) { isEnabled in
+                    .onChange(of: settings.isMusicEnabled) { _, isEnabled in
                         if isEnabled {
                             audioManager.playIfEnabled()
                         } else {
@@ -107,8 +116,8 @@ struct SettingsView: View {
                     }
                 HStack {
                     Text("Volumen")
-                    Slider(value: $audioManager.volume, in: 0...1, step: 0.01)
-                    Text("\(Int(audioManager.volume * 100))%")
+                    Slider(value: $settings.musicVolume, in: 0...1, step: 0.01)
+                    Text("\(Int(audioManager.volume() * 100))%")
                 }
             }
         }
