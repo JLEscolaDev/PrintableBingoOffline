@@ -16,11 +16,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		78650F192D20162000AEF746 /* SpriteKit */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = SpriteKit;
-			sourceTree = "<group>";
-		};
 		78EA68DD2D12CD9B006EBE8D /* PrintableBingoOffline */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = PrintableBingoOffline;
@@ -42,7 +37,6 @@
 		78EA68D22D12CD9B006EBE8D = {
 			isa = PBXGroup;
 			children = (
-				78650F192D20162000AEF746 /* SpriteKit */,
 				78650DCB2D14288F00AEF746 /* Assets.xcassets */,
 				78EA68DD2D12CD9B006EBE8D /* PrintableBingoOffline */,
 				78EA68DC2D12CD9B006EBE8D /* Products */,
@@ -73,7 +67,6 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				78650F192D20162000AEF746 /* SpriteKit */,
 				78EA68DD2D12CD9B006EBE8D /* PrintableBingoOffline */,
 			);
 			name = PrintableBingoOffline;

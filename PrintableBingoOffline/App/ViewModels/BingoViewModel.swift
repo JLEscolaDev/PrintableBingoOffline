@@ -22,7 +22,6 @@ class BingoViewModel: NSObject, ObservableObject, AVAudioPlayerDelegate {
     private var audioPlayer: AVAudioPlayer?
     private var audioData: AudioData?
     private var audioPlayerCompletion: (() -> Void)?
-    private let synthesizer = AVSpeechSynthesizer()
 
     override init() {
         super.init()
@@ -47,7 +46,6 @@ class BingoViewModel: NSObject, ObservableObject, AVAudioPlayerDelegate {
     func resetGame() {
         availableNumbers = Array(1...settings.maxNumber)
         drawnNumbers = []
-//        allNumbers = Array(1...settings.maxNumber)
         stopDrawing()
     }
 
