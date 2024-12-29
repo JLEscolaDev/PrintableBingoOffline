@@ -135,11 +135,11 @@ class BingoViewModel: NSObject, ObservableObject, AVAudioPlayerDelegate {
         }
     }
 
-    func generateBingoCards(numberOfCards: Int = 3) -> URL? {
+    func generateBingoCards(numberOfCards: Int = 30, cardsPerPage: Int = 3, maxNumber: Int = 90) -> URL? {
         let pageWidth: CGFloat = 595
         let pageHeight: CGFloat = 842
-        let cardsPerPage = 3
-        let cardHeight = pageHeight / CGFloat(cardsPerPage)
+        let cardHeight = (pageHeight / CGFloat(cardsPerPage)) - 10 // Dejar un margen vertical entre cartones
+        let margin: CGFloat = 5 // Margen entre cartones
 
         let pdfData = NSMutableData()
         guard let consumer = CGDataConsumer(data: pdfData as CFMutableData) else { return nil }
@@ -155,6 +155,13 @@ class BingoViewModel: NSObject, ObservableObject, AVAudioPlayerDelegate {
         let font = NSFont.systemFont(ofSize: 20)
         #endif
 
+        let borderColors: [CGColor] = [
+            CGColor(red: 0, green: 0, blue: 0, alpha: 1), // Negro
+            CGColor(red: 1, green: 0, blue: 0, alpha: 1), // Rojo
+            CGColor(red: 0, green: 1, blue: 0, alpha: 1), // Verde
+            CGColor(red: 0, green: 0, blue: 1, alpha: 1)  // Azul
+        ]
+
         for _ in 0..<totalPages {
             pdfContext.beginPDFPage(nil)
 
@@ -164,63 +171,34 @@ class BingoViewModel: NSObject, ObservableObject, AVAudioPlayerDelegate {
             for row in 0..<cardsPerPage {
                 guard cardIndex < numberOfCards else { break }
 
-                var numbersForCard = Array(1...settings.maxNumber).shuffled().prefix(25)
-                let gridSize = 5
-                let cellWidth = pageWidth / CGFloat(gridSize)
-                let cellHeight = cardHeight / CGFloat(gridSize)
-
-                let cardOriginY = pageHeight - (CGFloat(row + 1) * cardHeight)
+                let cardOriginY = pageHeight - (CGFloat(row + 1) * (cardHeight + margin))
 
                 let cardRect = CGRect(x: 0, y: cardOriginY, width: pageWidth, height: cardHeight)
-                pdfContext.setFillColor(CGColor(red: 0.9, green: 1.0, blue: 0.9, alpha: 1.0))
+
+                // Elegir color del borde
+                let borderColor = borderColors.randomElement()!
+
+                // Rellenar el fondo del cartón con el color del borde y opacidad 0.1
+                pdfContext.setFillColor(borderColor.copy(alpha: 0.1)!)
                 pdfContext.fill(cardRect)
 
-                pdfContext.setStrokeColor(CGColor(red: 1.0, green: 0, blue: 0, alpha: 1.0))
-                pdfContext.setLineWidth(4)
+                // Dibujar el borde exterior del cartón con el color del borde
+                pdfContext.setStrokeColor(borderColor)
+                pdfContext.setLineWidth(12) // Grosor del borde
                 pdfContext.stroke(cardRect)
 
-                let starSize: CGFloat = 20
-                drawStar(in: pdfContext, at: CGPoint(x: cardRect.minX + 10, y: cardRect.maxY - 10 - starSize), size: starSize)
-                drawStar(in: pdfContext, at: CGPoint(x: cardRect.maxX - 10 - starSize, y: cardRect.maxY - 10 - starSize), size: starSize)
-                drawStar(in: pdfContext, at: CGPoint(x: cardRect.minX + 10, y: cardRect.minY + 10), size: starSize)
-                drawStar(in: pdfContext, at: CGPoint(x: cardRect.maxX - 10 - starSize, y: cardRect.minY + 10), size: starSize)
+                // Generar números del cartón con huecos vacíos e iconos
+                let bingoCard = generateBingoCard9x3(maxNumber: maxNumber)
 
-                for r in 0..<gridSize {
-                    for c in 0..<gridSize {
-                        let rect = CGRect(x: CGFloat(c) * cellWidth,
-                                          y: cardOriginY + CGFloat(r) * cellHeight,
-                                          width: cellWidth,
-                                          height: cellHeight)
-                        pdfContext.setStrokeColor(CGColor.black)
-                        pdfContext.setLineWidth(1)
-                        pdfContext.stroke(rect)
-
-                        if let number = numbersForCard.popFirst() {
-                            let numberStr = "\(number)"
-                            #if canImport(UIKit)
-                            let attributes: [NSAttributedString.Key: Any] = [
-                                .font: font,
-                                .foregroundColor: UIColor.black
-                            ]
-                            #else
-                            let attributes: [NSAttributedString.Key: Any] = [
-                                .font: font,
-                                .foregroundColor: NSColor.black
-                            ]
-                            #endif
-
-                            let attrString = NSAttributedString(string: numberStr, attributes: attributes)
-                            let textSize = attrString.size()
-                            let textRect = CGRect(x: rect.midX - textSize.width / 2,
-                                                  y: rect.midY - textSize.height / 2,
-                                                  width: textSize.width,
-                                                  height: textSize.height)
-                            let line = CTLineCreateWithAttributedString(attrString)
-                            pdfContext.textPosition = CGPoint(x: textRect.minX, y: textRect.minY)
-                            CTLineDraw(line, pdfContext)
-                        }
-                    }
-                }
+                // Dibujar los números e iconos en el cartón
+                drawBingoCard9x3(
+                    context: pdfContext,
+                    card: bingoCard,
+                    originY: cardOriginY,
+                    cardHeight: cardHeight,
+                    pageWidth: pageWidth,
+                    font: font
+                )
 
                 cardIndex += 1
             }
@@ -235,23 +213,116 @@ class BingoViewModel: NSObject, ObservableObject, AVAudioPlayerDelegate {
         return tempURL
     }
 
-    private func drawStar(in context: CGContext, at point: CGPoint, size: CGFloat) {
-        let c = point
-        let radius = size / 2.0
-        let points = (0..<5).map { i -> CGPoint in
-            let angle = (Double(i) * 72.0 - 90.0) * Double.pi / 180.0
-            return CGPoint(x: c.x + CGFloat(cos(angle)) * radius, y: c.y + CGFloat(sin(angle)) * radius)
-        }
-        let starPath = CGMutablePath()
-        starPath.move(to: points[0])
-        starPath.addLine(to: points[2])
-        starPath.addLine(to: points[4])
-        starPath.addLine(to: points[1])
-        starPath.addLine(to: points[3])
-        starPath.closeSubpath()
+    func drawOuterBorder(context: CGContext, rect: CGRect, color: CGColor) {
+        context.setStrokeColor(color)
+        context.setLineWidth(12) // Grosor del borde
+        context.stroke(rect) // Dibujar borde exterior encima del grid
+    }
 
-        context.setFillColor(CGColor(red: 1.0, green: 0, blue: 0, alpha: 1.0))
-        context.addPath(starPath)
-        context.fillPath()
+    func generateBingoCard9x3(maxNumber: Int) -> [[String]] {
+        let rows = 3
+        let columns = 9
+        var bingoCard: [[String?]] = Array(repeating: Array(repeating: nil, count: columns), count: rows)
+
+        // Distribuir números en columnas por rangos
+        let columnRanges = [
+            1...9, 10...19, 20...29, 30...39, 40...49,
+            50...59, 60...69, 70...79, 80...90
+        ]
+
+        for col in 0..<columns {
+            let columnNumbers = Array(columnRanges[col]).shuffled().prefix(3).sorted(by: >) // Ordenar ascendentemente
+            for row in 0..<3 {
+                bingoCard[row][col] = "\(columnNumbers[row])"
+            }
+        }
+
+        // Asegurar 5 números por fila con huecos intercalados
+        let icons = ["🎄", "⭐️", "⛄️", "🎁", "❄️"]
+        for row in 0..<rows {
+            // Extraer las posiciones ocupadas
+            var filledIndices = bingoCard[row].enumerated().compactMap { $0.element != nil ? $0.offset : nil }
+            while filledIndices.count > 5 {
+                let indexToClear = filledIndices.randomElement()!
+                bingoCard[row][indexToClear] = icons.randomElement()!
+                filledIndices.removeAll { $0 == indexToClear }
+            }
+        }
+
+        // Convertir nil a iconos navideños (para celdas vacías)
+        return bingoCard.map { $0.map { $0 ?? icons.randomElement()! } }
+    }
+
+    func drawBingoCard9x3(context: CGContext, card: [[String]], originY: CGFloat, cardHeight: CGFloat, pageWidth: CGFloat, font: Any) {
+        let rows = 3
+        let columns = 9
+        let cellWidth = pageWidth / CGFloat(columns)
+        let cellHeight = cardHeight / CGFloat(rows)
+
+        for row in 0..<rows {
+            for col in 0..<columns {
+                let rect = CGRect(x: CGFloat(col) * cellWidth,
+                                  y: originY + CGFloat(row) * cellHeight,
+                                  width: cellWidth,
+                                  height: cellHeight)
+
+                // Dibujar el grid completo en negro
+                context.setStrokeColor(CGColor.black)
+                context.setLineWidth(1)
+                context.stroke(rect)
+
+                let value = card[row][col]
+
+                if value.rangeOfCharacter(from: .decimalDigits) != nil {
+                    // Dibujar número
+                    #if canImport(UIKit)
+                    let color = UIColor.black
+                    #else
+                    let color = NSColor.black
+                    #endif
+                    let attributes: [NSAttributedString.Key: Any] = [
+                        .font: font,
+                        .foregroundColor: color
+                    ]
+                    let attrString = NSAttributedString(string: value, attributes: attributes)
+                    let textSize = attrString.size()
+                    let textRect = CGRect(x: rect.midX - textSize.width / 2,
+                                          y: rect.midY - textSize.height / 2,
+                                          width: textSize.width,
+                                          height: textSize.height)
+                    let line = CTLineCreateWithAttributedString(attrString)
+                    context.textPosition = CGPoint(x: textRect.minX, y: textRect.minY)
+                    CTLineDraw(line, context)
+                } else {
+                    // Dibujar icono navideño
+                    drawChristmasIcon(context: context, rect: rect, icon: value)
+                }
+            }
+        }
+    }
+
+    func drawChristmasIcon(context: CGContext, rect: CGRect, icon: String) {
+        let iconFontSize = min(rect.width, rect.height) * 0.6
+        #if canImport(UIKit)
+        let font = UIFont.systemFont(ofSize: iconFontSize)
+        let color = UIColor.red.withAlphaComponent(0.5)
+        #else
+        let font = NSFont.systemFont(ofSize: iconFontSize)
+        let color = NSColor.red.withAlphaComponent(0.5)
+        #endif
+        let attributes: [NSAttributedString.Key: Any] = [
+            .font: font,
+            .foregroundColor: color
+        ]
+
+        let attrString = NSAttributedString(string: icon, attributes: attributes)
+        let textSize = attrString.size()
+        let textRect = CGRect(x: rect.midX - textSize.width / 2,
+                              y: rect.midY - textSize.height / 2,
+                              width: textSize.width,
+                              height: textSize.height)
+        let line = CTLineCreateWithAttributedString(attrString)
+        context.textPosition = CGPoint(x: textRect.minX, y: textRect.minY)
+        CTLineDraw(line, context)
     }
 }
