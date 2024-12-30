@@ -18,13 +18,6 @@ struct ContentView: View {
         mainContent
         #else
         mainContent
-            .toolbar {
-                Button {
-                    showSettings = true
-                } label: {
-                    Image(systemName: "gear")
-                }
-            }
             .sheet(isPresented: $showSettings) {
                 SettingsView()
                     .environmentObject(viewModel) // Pasar explícitamente el modelo
@@ -35,22 +28,24 @@ struct ContentView: View {
     var mainContent: some View {
         HStack(alignment: .top) {
             VStack(alignment: .leading) {
-                ZStack {
-                    UnevenRoundedRectangle(cornerRadii: .init(bottomLeading: 20, bottomTrailing: 20, topTrailing: 20))
-                        .fill(.black.opacity(0.8))
-                        .frame(width: 200, height: 100)
+                HStack {
                     VStack {
                         HStack {
                             Button("Start") {
                                 viewModel.startDrawing()
                             }
+                            .buttonStyle(UnifiedButtonStyle())
+                            
                             Button("Stop") {
                                 viewModel.stopDrawing()
                             }
+                            .buttonStyle(UnifiedButtonStyle())
+                            
                             Button("Reset") {
                                 viewModel.resetGame()
                                 currentBackground = "ChristmasBackground\(Int.random(in: 1...10))"
                             }
+                            .buttonStyle(UnifiedButtonStyle())
                         }
                         Button("Generar Cartones PDF") {
                             if let url = viewModel.generateBingoCards() {
@@ -61,10 +56,26 @@ struct ContentView: View {
                                 UIApplication.shared.windows.first?.rootViewController?.present(activityVC, animated: true, completion: nil)
                                 #endif
                             }
-                        }
+                        }.buttonStyle(UnifiedButtonStyle())
                     }
+                    #if os(iOS)
+                    Button {
+                        showSettings = true
+                    } label: {
+                        Image(systemName: "gear")
+                            .resizable()
+                            .frame(width: 50, height: 50)
+                    }.buttonStyle(UnifiedButtonStyle())
+                    #endif
                 }
+                .padding(16)
+                .background {
+                    UnevenRoundedRectangle(cornerRadii: .init(bottomLeading: 20, bottomTrailing: 20, topTrailing: 20))
+                        .fill(.black.opacity(0.8))
+                }
+                #if os(macOS)
                 TamborView()
+                #endif
                 LastDrawnNumbersView(drawnNumbers: viewModel.drawnNumbers)
             }
             NumbersGridView(allNumbers: viewModel.allNumbers(), drawnNumbers: viewModel.drawnNumbers)
@@ -78,8 +89,9 @@ struct ContentView: View {
                     Image(currentBackground)
                         .resizable()
                         .scaledToFill()
-                        .frame(width: geometry.size.width, height: geometry.size.height)
+//                        .frame(width: geometry.size.width, height: geometry.size.height)
                         .clipped()
+                        .ignoresSafeArea()
                     VStack {
                         // Nubes animadas
                         HStack(spacing: -100) {
@@ -119,5 +131,4 @@ struct ContentView: View {
         return scene
     }
 }
-
 

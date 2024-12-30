@@ -62,10 +62,13 @@ class SettingsManager {
         }
     }
 
-    // MARK: - Init privado
+    // MARK: - Default init
     private init() {
         if UserDefaults.standard.object(forKey: "drawInterval") == nil {
             drawInterval = 5.0
+        }
+        if UserDefaults.standard.object(forKey: "shouldSpeak") == nil {
+            shouldSpeak = true
         }
         if UserDefaults.standard.object(forKey: "maxNumber") == nil {
             maxNumber = 75
@@ -74,12 +77,15 @@ class SettingsManager {
             isMusicEnabled = true
         }
         if UserDefaults.standard.object(forKey: "musicVolume") == nil {
-            musicVolume = 0.5
+            musicVolume = 0.15
         }
     }
 }
 
 struct SettingsView: View {
+    #if os(iOS)
+    @Environment(\.dismiss) var dismiss
+    #endif
     @State private var settings = SettingsManager.shared
     @StateObject private var audioManager = AudioPlayerManager.shared
 
@@ -121,6 +127,11 @@ struct SettingsView: View {
                     Text("\(Int(audioManager.volume() * 100))%")
                 }
             }
+            #if os(iOS)
+            Button("Aceptar") {
+                dismiss()
+            }.frame(maxWidth: .infinity)
+            #endif
         }
         .padding()
         #if os(macOS)

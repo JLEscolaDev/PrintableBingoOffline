@@ -11,7 +11,8 @@ import SwiftUI
 struct PrintableBingoOfflineApp: App {
     @StateObject private var viewModel = BingoViewModel()
     @StateObject private var audioManager = AudioPlayerManager.shared
-
+    @Environment(\.scenePhase) var scenePhase
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
@@ -19,6 +20,12 @@ struct PrintableBingoOfflineApp: App {
                 .onAppear {
                     audioManager.playIfEnabled()
                 }
+        }.onChange(of: scenePhase) { oldPhase, newPhase in
+            if newPhase == .active {
+                audioManager.playIfEnabled()
+            } else {
+                audioManager.stopMusic()
+            }
         }
         #if os(macOS)
         Settings {

@@ -151,21 +151,28 @@ class BingoViewModel: NSObject, ObservableObject, AVAudioPlayerDelegate {
 
         #if canImport(UIKit)
         let font = UIFont.systemFont(ofSize: 20)
+        let borderColors = [
+            UIColor.black.cgColor,
+            UIColor.red.cgColor,
+            UIColor.green.cgColor,
+            UIColor.blue.cgColor
+        ]
+        let whiteColor = UIColor.white.cgColor
         #else
         let font = NSFont.systemFont(ofSize: 20)
-        #endif
-
-        let borderColors: [CGColor] = [
-            CGColor(red: 0, green: 0, blue: 0, alpha: 1), // Negro
-            CGColor(red: 1, green: 0, blue: 0, alpha: 1), // Rojo
-            CGColor(red: 0, green: 1, blue: 0, alpha: 1), // Verde
-            CGColor(red: 0, green: 0, blue: 1, alpha: 1)  // Azul
+        let borderColors = [
+            NSColor.black.cgColor,
+            NSColor.red.cgColor,
+            NSColor.green.cgColor,
+            NSColor.blue.cgColor
         ]
+        let whiteColor = NSColor.white.cgColor
+        #endif
 
         for _ in 0..<totalPages {
             pdfContext.beginPDFPage(nil)
 
-            pdfContext.setFillColor(CGColor.white)
+            pdfContext.setFillColor(whiteColor)
             pdfContext.fill(mediaBox)
 
             for row in 0..<cardsPerPage {
@@ -259,6 +266,14 @@ class BingoViewModel: NSObject, ObservableObject, AVAudioPlayerDelegate {
         let cellWidth = pageWidth / CGFloat(columns)
         let cellHeight = cardHeight / CGFloat(rows)
 
+        #if canImport(UIKit)
+        let strokeColor = UIColor.black.cgColor
+        let textColor = UIColor.black
+        #else
+        let strokeColor = NSColor.black.cgColor
+        let textColor = NSColor.black
+        #endif
+
         for row in 0..<rows {
             for col in 0..<columns {
                 let rect = CGRect(x: CGFloat(col) * cellWidth,
@@ -267,7 +282,7 @@ class BingoViewModel: NSObject, ObservableObject, AVAudioPlayerDelegate {
                                   height: cellHeight)
 
                 // Dibujar el grid completo en negro
-                context.setStrokeColor(CGColor.black)
+                context.setStrokeColor(strokeColor)
                 context.setLineWidth(1)
                 context.stroke(rect)
 
@@ -275,14 +290,9 @@ class BingoViewModel: NSObject, ObservableObject, AVAudioPlayerDelegate {
 
                 if value.rangeOfCharacter(from: .decimalDigits) != nil {
                     // Dibujar número
-                    #if canImport(UIKit)
-                    let color = UIColor.black
-                    #else
-                    let color = NSColor.black
-                    #endif
                     let attributes: [NSAttributedString.Key: Any] = [
                         .font: font,
-                        .foregroundColor: color
+                        .foregroundColor: textColor
                     ]
                     let attrString = NSAttributedString(string: value, attributes: attributes)
                     let textSize = attrString.size()
