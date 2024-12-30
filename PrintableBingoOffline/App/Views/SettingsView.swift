@@ -46,6 +46,7 @@ class SettingsManager {
     var useEnglish: Bool = UserDefaults.standard.bool(forKey: "useEnglish") {
         didSet {
             UserDefaults.standard.set(useEnglish, forKey: "useEnglish")
+            shouldGuarro = false // There are no dirty rhymes for english version
         }
     }
     
