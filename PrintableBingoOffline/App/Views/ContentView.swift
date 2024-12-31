@@ -51,14 +51,25 @@ struct ContentView: View {
                             if let url = viewModel.generateBingoCards() {
                                 #if os(macOS)
                                 NSWorkspace.shared.activateFileViewerSelecting([url])
-                                #elseif os(iOS)
-                                let activityVC = UIActivityViewController(activityItems: [url], applicationActivities: nil)
-                                UIApplication.shared.windows.first?.rootViewController?.present(activityVC, animated: true, completion: nil)
-                                #endif
+                        #elseif os(iOS) || os(visionOS)
+                        let activityVC = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+
+                        // Configurar el sourceView para evitar el error
+                        if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                           let rootVC = scene.windows.first?.rootViewController {
+                            activityVC.popoverPresentationController?.sourceView = rootVC.view
+                            activityVC.popoverPresentationController?.sourceRect = CGRect(x: scene.windows.first?.bounds.midX ?? 0,
+                                                                                          y: scene.windows.first?.bounds.midY ?? 0,
+                                                                                          width: 0, height: 0)
+                            activityVC.popoverPresentationController?.permittedArrowDirections = []
+
+                            rootVC.present(activityVC, animated: true, completion: nil)
+                        }
+                        #endif
                             }
                         }.buttonStyle(UnifiedButtonStyle())
                     }
-                    #if os(iOS)
+                    #if os(iOS) || os(visionOS)
                     Button {
                         showSettings = true
                     } label: {

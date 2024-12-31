@@ -83,7 +83,7 @@ class SettingsManager {
 }
 
 struct SettingsView: View {
-    #if os(iOS)
+    #if os(iOS) || os(visionOS)
     @Environment(\.dismiss) var dismiss
     #endif
     @State private var settings = SettingsManager.shared
@@ -127,7 +127,7 @@ struct SettingsView: View {
                     Text("\(Int(audioManager.volume() * 100))%")
                 }
             }
-            #if os(iOS)
+            #if os(iOS) || os(visionOS)
             Button("Aceptar") {
                 dismiss()
             }.frame(maxWidth: .infinity)
