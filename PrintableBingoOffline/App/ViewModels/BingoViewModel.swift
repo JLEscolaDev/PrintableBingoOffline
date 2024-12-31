@@ -88,6 +88,10 @@ class BingoViewModel: NSObject, ObservableObject, AVAudioPlayerDelegate {
                 let commentAudio = "\(commentFile)-\(language)"
                 // Play number audio first, then the comment
                 playAudio(from: numberAudio) {
+                    guard self.settings.shouldJoke, self.settings.shouldJoke == true else {
+                        self.scheduleNextDraw()
+                        return
+                    }
                     self.playAudio(from: commentAudio) {
                         self.scheduleNextDraw()
                     }

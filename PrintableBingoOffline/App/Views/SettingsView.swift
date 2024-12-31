@@ -39,6 +39,10 @@ class SettingsManager {
 
     var shouldGuarro: Bool = UserDefaults.standard.bool(forKey: "shouldGuarro") {
         didSet {
+            // It is mandatory to mark the shouldJoke if we want dirty jokes.
+            if shouldGuarro {
+                shouldJoke = true
+            }
             UserDefaults.standard.set(shouldGuarro, forKey: "shouldGuarro")
         }
     }
@@ -69,6 +73,9 @@ class SettingsManager {
         }
         if UserDefaults.standard.object(forKey: "shouldSpeak") == nil {
             shouldSpeak = true
+        }
+        if UserDefaults.standard.object(forKey: "shouldJoke") == nil {
+            shouldJoke = false
         }
         if UserDefaults.standard.object(forKey: "maxNumber") == nil {
             maxNumber = 75
