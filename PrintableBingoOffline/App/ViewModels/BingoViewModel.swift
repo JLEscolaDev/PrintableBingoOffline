@@ -8,23 +8,30 @@
 import AVFoundation
 import SwiftUI
 
-class BingoViewModel: NSObject, ObservableObject, AVAudioPlayerDelegate {
-    @State private var settings = SettingsManager.shared
-    
+@MainActor
+class BingoViewModel: NSObject, ObservableObject, AVAudioPlayerDelegate, AVSpeechSynthesizerDelegate {
+    private var settings = SettingsManager.shared
+    private let audioManager = AudioPlayerManager.shared
+    private let speechSynthesizer = AVSpeechSynthesizer()
+
     func allNumbers() -> [Int] {
         Array(1...settings.maxNumber)
     }
     
     @Published var drawnNumbers: [Int] = []
     @Published var isDrawing: Bool = false
+    @Published var currentCaption: String? = nil
+    @Published var didFinishGame: Bool = false
 
     private var availableNumbers: [Int] = []
     private var audioPlayer: AVAudioPlayer?
     private var audioData: AudioData?
     private var audioPlayerCompletion: (() -> Void)?
+    private var ttsCompletion: (() -> Void)?
 
     override init() {
         super.init()
+        speechSynthesizer.delegate = self
         loadAudioData()
         resetGame()
     }
@@ -46,11 +53,17 @@ class BingoViewModel: NSObject, ObservableObject, AVAudioPlayerDelegate {
     func resetGame() {
         availableNumbers = Array(1...settings.maxNumber)
         drawnNumbers = []
+        didFinishGame = false
         stopDrawing()
     }
 
     func startDrawing() {
         guard !isDrawing else { return }
+        if availableNumbers.isEmpty {
+            availableNumbers = Array(1...settings.maxNumber)
+            drawnNumbers = []
+            didFinishGame = false
+        }
         isDrawing = true
         drawAndSpeakNextNumber()
     }
@@ -58,11 +71,18 @@ class BingoViewModel: NSObject, ObservableObject, AVAudioPlayerDelegate {
     func stopDrawing() {
         isDrawing = false
         audioPlayer?.stop()
+        speechSynthesizer.stopSpeaking(at: .immediate)
+        audioPlayerCompletion = nil
+        ttsCompletion = nil
+        currentCaption = nil
+        audioManager.unduckMusic()
     }
 
     private func drawAndSpeakNextNumber() {
-        guard isDrawing, let number = availableNumbers.randomElement() else {
+        guard isDrawing else { return }
+        guard let number = availableNumbers.randomElement() else {
             stopDrawing()
+            didFinishGame = true
             return
         }
 
@@ -77,35 +97,100 @@ class BingoViewModel: NSObject, ObservableObject, AVAudioPlayerDelegate {
             return
         }
 
-        let mode = settings.shouldGuarro ? "dirty" : "comments"
         let language = settings.useEnglish ? "English" : "Spanish"
         let numberAudio = "\(number)-\(language)"
+        let commentSelection = selectComment(for: number)
 
-        if let audioEntry = audioData?.numbers[number] {
-            let commentFiles = mode == "dirty" ? audioEntry.audio.dirty : audioEntry.audio.comments
-
-            if let commentFile = commentFiles.first {
-                let commentAudio = "\(commentFile)-\(language)"
-                // Play number audio first, then the comment
-                playAudio(from: numberAudio) {
-                    guard self.settings.shouldJoke, self.settings.shouldJoke == true else {
-                        self.scheduleNextDraw()
-                        return
-                    }
-                    self.playAudio(from: commentAudio) {
-                        self.scheduleNextDraw()
-                    }
-                }
-            } else {
-                // Only play the number audio if no comment is available
-                playAudio(from: numberAudio) {
+        audioManager.duckMusic()
+        playNumberAudio(fileName: numberAudio, number: number, language: language) {
+            if let commentSelection {
+                self.playCommentAudio(selection: commentSelection, preferredLanguage: language) {
+                    self.audioManager.unduckMusic()
                     self.scheduleNextDraw()
                 }
+            } else {
+                self.audioManager.unduckMusic()
+                self.scheduleNextDraw()
             }
-        } else {
-            print("Audio not found for number: \(number)")
-            scheduleNextDraw()
         }
+    }
+
+    private struct CommentSelection {
+        let audioBase: String
+        let text: String?
+    }
+
+    private func selectComment(for number: Int) -> CommentSelection? {
+        guard settings.shouldJoke else { return nil }
+        guard Double.random(in: 0...1) <= settings.jokeFrequency else { return nil }
+        guard let audioEntry = audioData?.numbers[number] else { return nil }
+
+        var audioFiles = settings.shouldGuarro ? audioEntry.audio.dirty : audioEntry.audio.comments
+        var textOptions = settings.shouldGuarro ? audioEntry.text.dirty : audioEntry.text.comments
+
+        if audioFiles.isEmpty {
+            audioFiles = audioEntry.audio.comments
+            textOptions = audioEntry.text.comments
+        }
+
+        guard !audioFiles.isEmpty else { return nil }
+        let index = Int.random(in: 0..<audioFiles.count)
+        let audioBase = audioFiles[index]
+        let text = index < textOptions.count ? textOptions[index] : textOptions.randomElement()
+        return CommentSelection(audioBase: audioBase, text: text)
+    }
+
+    private func playNumberAudio(fileName: String, number: Int, language: String, completion: @escaping () -> Void) {
+        if Bundle.main.url(forResource: fileName, withExtension: "mp3") != nil {
+            playAudio(from: fileName, completion: completion)
+            return
+        }
+
+        if settings.useEnglish {
+            speakNumberWithTTS(number: number, language: language, completion: completion)
+            return
+        }
+
+        completion()
+    }
+
+    private func playCommentAudio(selection: CommentSelection, preferredLanguage: String, completion: @escaping () -> Void) {
+        let resolvedFile = resolveCommentAudioFile(baseName: selection.audioBase, preferredLanguage: preferredLanguage)
+
+        if let caption = selection.text {
+            DispatchQueue.main.async {
+                self.currentCaption = caption
+            }
+        }
+
+        guard let resolvedFile else {
+            DispatchQueue.main.async {
+                self.currentCaption = nil
+            }
+            completion()
+            return
+        }
+
+        playAudio(from: resolvedFile) {
+            DispatchQueue.main.async {
+                self.currentCaption = nil
+            }
+            completion()
+        }
+    }
+
+    private func resolveCommentAudioFile(baseName: String, preferredLanguage: String) -> String? {
+        let preferred = "\(baseName)-\(preferredLanguage)"
+        if Bundle.main.url(forResource: preferred, withExtension: "mp3") != nil {
+            return preferred
+        }
+        if preferredLanguage != "Spanish" {
+            let spanish = "\(baseName)-Spanish"
+            if Bundle.main.url(forResource: spanish, withExtension: "mp3") != nil {
+                return spanish
+            }
+        }
+        return nil
     }
 
     private func playAudio(from fileName: String, completion: @escaping () -> Void) {
@@ -129,6 +214,22 @@ class BingoViewModel: NSObject, ObservableObject, AVAudioPlayerDelegate {
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         if let completion = audioPlayerCompletion {
             audioPlayerCompletion = nil
+            completion()
+        }
+    }
+
+    private func speakNumberWithTTS(number: Int, language: String, completion: @escaping () -> Void) {
+        let utterance = AVSpeechUtterance(string: "\(number)")
+        let locale = language == "English" ? "en-US" : "es-ES"
+        utterance.voice = AVSpeechSynthesisVoice(language: locale)
+        utterance.rate = 0.48
+        ttsCompletion = completion
+        speechSynthesizer.speak(utterance)
+    }
+
+    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
+        if let completion = ttsCompletion {
+            ttsCompletion = nil
             completion()
         }
     }

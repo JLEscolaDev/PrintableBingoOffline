@@ -37,6 +37,12 @@ class SettingsManager {
         }
     }
 
+    var jokeFrequency: Double = UserDefaults.standard.double(forKey: "jokeFrequency") {
+        didSet {
+            UserDefaults.standard.set(jokeFrequency, forKey: "jokeFrequency")
+        }
+    }
+
     var shouldGuarro: Bool = UserDefaults.standard.bool(forKey: "shouldGuarro") {
         didSet {
             // It is mandatory to mark the shouldJoke if we want dirty jokes.
@@ -51,6 +57,15 @@ class SettingsManager {
         didSet {
             UserDefaults.standard.set(useEnglish, forKey: "useEnglish")
             shouldGuarro = false // There are no dirty rhymes for english version
+        }
+    }
+
+    var themeMode: ThemeMode = {
+        let rawValue = UserDefaults.standard.string(forKey: "themeMode") ?? ThemeMode.auto.rawValue
+        return ThemeMode(rawValue: rawValue) ?? .auto
+    }() {
+        didSet {
+            UserDefaults.standard.set(themeMode.rawValue, forKey: "themeMode")
         }
     }
     
@@ -77,22 +92,26 @@ class SettingsManager {
         if UserDefaults.standard.object(forKey: "shouldJoke") == nil {
             shouldJoke = false
         }
+        if UserDefaults.standard.object(forKey: "jokeFrequency") == nil {
+            jokeFrequency = 0.05
+        }
         if UserDefaults.standard.object(forKey: "maxNumber") == nil {
             maxNumber = 75
+        }
+        if UserDefaults.standard.object(forKey: "themeMode") == nil {
+            themeMode = .auto
         }
         if UserDefaults.standard.object(forKey: "isMusicEnabled") == nil {
             isMusicEnabled = true
         }
         if UserDefaults.standard.object(forKey: "musicVolume") == nil {
-            musicVolume = 0.15
+            musicVolume = 0.35
         }
     }
 }
 
 struct SettingsView: View {
-    #if os(iOS) || os(visionOS)
-    @Environment(\.dismiss) var dismiss
-    #endif
+    @Environment(\.dismiss) private var dismiss
     @State private var settings = SettingsManager.shared
     @StateObject private var audioManager = AudioPlayerManager.shared
 
@@ -114,9 +133,24 @@ struct SettingsView: View {
                 Toggle("Usar bromas / frases", isOn: $settings.shouldJoke)
                 Toggle("Modo Guarro", isOn: $settings.shouldGuarro)
                     .disabled(settings.useEnglish)
+                HStack {
+                    Text("Frecuencia de frases")
+                    Slider(value: $settings.jokeFrequency, in: 0...1, step: 0.01)
+                    Text("\(Int(settings.jokeFrequency * 100))%")
+                        .frame(width: 50, alignment: .trailing)
+                }
+                .disabled(!settings.shouldJoke)
             }
             Section(header: Text("Idioma")) {
                 Toggle("Usar Inglés", isOn: $settings.useEnglish)
+            }
+            Section(header: Text("Tema")) {
+                Picker("Tema", selection: $settings.themeMode) {
+                    ForEach(ThemeMode.allCases) { mode in
+                        Text(mode.displayName).tag(mode)
+                    }
+                }
+                .pickerStyle(.segmented)
             }
             Section(header: Text("Música de Fondo")) {
                 Toggle("Música", isOn: $settings.isMusicEnabled)
@@ -131,18 +165,21 @@ struct SettingsView: View {
                 HStack {
                     Text("Volumen")
                     Slider(value: $settings.musicVolume, in: 0...1, step: 0.01)
-                    Text("\(Int(audioManager.volume() * 100))%")
+                        .onChange(of: settings.musicVolume) { _, _ in
+                            audioManager.applyPerceptualVolume()
+                        }
+                    Text("\(audioManager.effectiveVolumePercent())%")
+                        .frame(width: 50, alignment: .trailing)
                 }
             }
-            #if os(iOS) || os(visionOS)
-            Button("Aceptar") {
+            Button("Cerrar") {
                 dismiss()
-            }.frame(maxWidth: .infinity)
-            #endif
+            }
+            .frame(maxWidth: .infinity)
         }
         .padding()
         #if os(macOS)
-        .frame(width: 300)
+        .frame(minWidth: 340)
         #endif
     }
 }

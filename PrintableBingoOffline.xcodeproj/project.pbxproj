@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		788F10922D27153F00621CA6 /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; platformFilter = ios; productRef = 788F10912D27153F00621CA6 /* GoogleMobileAds */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		78EA68DB2D12CD9B006EBE8D /* PrintableBingoOffline.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PrintableBingoOffline.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -23,6 +27,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				788F10922D27153F00621CA6 /* GoogleMobileAds in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +70,7 @@
 			);
 			name = PrintableBingoOffline;
 			packageProductDependencies = (
+				788F10912D27153F00621CA6 /* GoogleMobileAds */,
 			);
 			productName = PrintableBingoOffline;
 			productReference = 78EA68DB2D12CD9B006EBE8D /* PrintableBingoOffline.app */;
@@ -94,6 +100,9 @@
 			);
 			mainGroup = 78EA68D22D12CD9B006EBE8D;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				788F10902D27153F00621CA6 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 78EA68DC2D12CD9B006EBE8D /* Products */;
 			projectDirPath = "";
@@ -252,6 +261,8 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				"INFOPLIST_KEY_GADApplicationIdentifier[sdk=iphoneos*]" = "ca-app-pub-3940256099942544~1458002511";
+				"INFOPLIST_KEY_GADApplicationIdentifier[sdk=iphonesimulator*]" = "ca-app-pub-3940256099942544~1458002511";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -266,14 +277,18 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = inversionesMezcola.development.PrintableBingoOffline;
+				PRODUCT_BUNDLE_IDENTIFIER = com.LudicraLumina.printableBingoOffline.app;
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = com.LudicraLumina.iOS.printableBingoOffline;
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=macosx*]" = com.LudicraLumina.macOS.printableBingoOffline;
+				"INFOPLIST_FILE[sdk=iphoneos*]" = PrintableBingoOffline/Info-iOS.plist;
+				"INFOPLIST_FILE[sdk=iphonesimulator*]" = PrintableBingoOffline/Info-iOS.plist;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				STOREKIT_CONFIGURATION_FILE = PrintableBingoOffline/StoreKit.storekit;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,7";
-				XROS_DEPLOYMENT_TARGET = 2.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -290,6 +305,8 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				"INFOPLIST_KEY_GADApplicationIdentifier[sdk=iphoneos*]" = "ca-app-pub-3940256099942544~1458002511";
+				"INFOPLIST_KEY_GADApplicationIdentifier[sdk=iphonesimulator*]" = "ca-app-pub-3940256099942544~1458002511";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -304,14 +321,17 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = inversionesMezcola.development.PrintableBingoOffline;
+				PRODUCT_BUNDLE_IDENTIFIER = com.LudicraLumina.printableBingoOffline.app;
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = com.LudicraLumina.iOS.printableBingoOffline;
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=macosx*]" = com.LudicraLumina.macOS.printableBingoOffline;
+				"INFOPLIST_FILE[sdk=iphoneos*]" = PrintableBingoOffline/Info-iOS.plist;
+				"INFOPLIST_FILE[sdk=iphonesimulator*]" = PrintableBingoOffline/Info-iOS.plist;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,7";
-				XROS_DEPLOYMENT_TARGET = 2.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -337,6 +357,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		788F10902D27153F00621CA6 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/googleads/swift-package-manager-google-mobile-ads.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.13.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		788F10912D27153F00621CA6 /* GoogleMobileAds */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 788F10902D27153F00621CA6 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */;
+			productName = GoogleMobileAds;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 78EA68D32D12CD9B006EBE8D /* Project object */;
 }

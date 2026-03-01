@@ -10,9 +10,24 @@ class AudioPlayerManager: NSObject, ObservableObject {
     private var savedTime: TimeInterval = 0
     private(set) var currentSong: String?
     private(set) var playbackRate: Float = 1.0
-    func volume() -> Float {
-        audioPlayer?.volume = settings.musicVolume
-        return settings.musicVolume
+    private var duckingMultiplier: Float = 1.0
+
+    func effectiveVolume() -> Float {
+        let raw = max(0, min(1, Double(settings.musicVolume)))
+        if raw == 0 {
+            return 0
+        }
+        let curved = Float(pow(raw, 1.2))
+        let floored = max(curved, 0.03)
+        return floored * duckingMultiplier
+    }
+
+    func effectiveVolumePercent() -> Int {
+        Int((effectiveVolume() * 100).rounded())
+    }
+
+    func applyPerceptualVolume() {
+        audioPlayer?.volume = effectiveVolume()
     }
 
     // Lista de canciones
@@ -37,7 +52,7 @@ class AudioPlayerManager: NSObject, ObservableObject {
             audioPlayer?.delegate = self
             audioPlayer?.enableRate = true
             audioPlayer?.rate = playbackRate
-            audioPlayer?.volume = volume()
+            audioPlayer?.volume = effectiveVolume()
             audioPlayer?.prepareToPlay()
             if audioPlayer?.play() == true {
                 print("Reproducción iniciada correctamente.")
@@ -72,6 +87,16 @@ class AudioPlayerManager: NSObject, ObservableObject {
         audioPlayer = nil
         currentSong = nil
         print("Música detenida.")
+    }
+
+    func duckMusic() {
+        duckingMultiplier = 0.45
+        applyPerceptualVolume()
+    }
+
+    func unduckMusic() {
+        duckingMultiplier = 1.0
+        applyPerceptualVolume()
     }
 
     // MARK: - Cambiar la velocidad de reproducción
