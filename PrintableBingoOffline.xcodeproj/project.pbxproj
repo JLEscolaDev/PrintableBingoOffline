@@ -261,6 +261,8 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				"INFOPLIST_FILE[sdk=iphoneos*]" = "PrintableBingoOffline/Info-iOS.plist";
+				"INFOPLIST_FILE[sdk=iphonesimulator*]" = "PrintableBingoOffline/Info-iOS.plist";
 				"INFOPLIST_KEY_GADApplicationIdentifier[sdk=iphoneos*]" = "ca-app-pub-3940256099942544~1458002511";
 				"INFOPLIST_KEY_GADApplicationIdentifier[sdk=iphonesimulator*]" = "ca-app-pub-3940256099942544~1458002511";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
@@ -280,8 +282,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.LudicraLumina.printableBingoOffline.app;
 				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = com.LudicraLumina.iOS.printableBingoOffline;
 				"PRODUCT_BUNDLE_IDENTIFIER[sdk=macosx*]" = com.LudicraLumina.macOS.printableBingoOffline;
-				"INFOPLIST_FILE[sdk=iphoneos*]" = PrintableBingoOffline/Info-iOS.plist;
-				"INFOPLIST_FILE[sdk=iphonesimulator*]" = PrintableBingoOffline/Info-iOS.plist;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				STOREKIT_CONFIGURATION_FILE = PrintableBingoOffline/StoreKit.storekit;
@@ -305,6 +305,8 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				"INFOPLIST_FILE[sdk=iphoneos*]" = "PrintableBingoOffline/Info-iOS.plist";
+				"INFOPLIST_FILE[sdk=iphonesimulator*]" = "PrintableBingoOffline/Info-iOS.plist";
 				"INFOPLIST_KEY_GADApplicationIdentifier[sdk=iphoneos*]" = "ca-app-pub-3940256099942544~1458002511";
 				"INFOPLIST_KEY_GADApplicationIdentifier[sdk=iphonesimulator*]" = "ca-app-pub-3940256099942544~1458002511";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
@@ -324,8 +326,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.LudicraLumina.printableBingoOffline.app;
 				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = com.LudicraLumina.iOS.printableBingoOffline;
 				"PRODUCT_BUNDLE_IDENTIFIER[sdk=macosx*]" = com.LudicraLumina.macOS.printableBingoOffline;
-				"INFOPLIST_FILE[sdk=iphoneos*]" = PrintableBingoOffline/Info-iOS.plist;
-				"INFOPLIST_FILE[sdk=iphonesimulator*]" = PrintableBingoOffline/Info-iOS.plist;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";

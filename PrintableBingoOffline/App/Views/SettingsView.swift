@@ -61,8 +61,8 @@ class SettingsManager {
     }
 
     var themeMode: ThemeMode = {
-        let rawValue = UserDefaults.standard.string(forKey: "themeMode") ?? ThemeMode.auto.rawValue
-        return ThemeMode(rawValue: rawValue) ?? .auto
+        let rawValue = UserDefaults.standard.string(forKey: "themeMode") ?? ThemeMode.christmas.rawValue
+        return ThemeMode(rawValue: rawValue) ?? .christmas
     }() {
         didSet {
             UserDefaults.standard.set(themeMode.rawValue, forKey: "themeMode")
@@ -99,7 +99,7 @@ class SettingsManager {
             maxNumber = 75
         }
         if UserDefaults.standard.object(forKey: "themeMode") == nil {
-            themeMode = .auto
+            themeMode = .christmas
         }
         if UserDefaults.standard.object(forKey: "isMusicEnabled") == nil {
             isMusicEnabled = true

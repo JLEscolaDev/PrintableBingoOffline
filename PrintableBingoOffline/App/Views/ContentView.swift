@@ -312,7 +312,7 @@ struct ContentView: View {
     }
 
     private func generatePDF() {
-        guard let url = viewModel.generateBingoCards() else { return }
+        guard let url = viewModel.generateBingoCards(maxNumber: settings.maxNumber) else { return }
         #if os(macOS)
         NSWorkspace.shared.activateFileViewerSelecting([url])
         #elseif os(iOS) || os(visionOS)

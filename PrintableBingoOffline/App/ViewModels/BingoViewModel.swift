@@ -254,6 +254,8 @@ class BingoViewModel: NSObject, ObservableObject, AVAudioPlayerDelegate, AVSpeec
         let totalPages = Int(ceil(Double(numberOfCards) / Double(cardsPerPage)))
         var cardIndex = 0
 
+        let resolvedTheme = ThemeResolver.resolvedTheme(for: Date(), mode: settings.themeMode)
+
         #if canImport(UIKit)
         let font = UIFont.systemFont(ofSize: 20)
         let borderColors = [
@@ -300,7 +302,8 @@ class BingoViewModel: NSObject, ObservableObject, AVAudioPlayerDelegate, AVSpeec
                 pdfContext.stroke(cardRect)
 
                 // Generar números del cartón con huecos vacíos e iconos
-                let bingoCard = generateBingoCard9x3(maxNumber: maxNumber)
+                let placeholdersForCard = placeholdersForCard(theme: resolvedTheme, cardIndex: cardIndex)
+                let bingoCard = generateBingoCard9x3(maxNumber: maxNumber, placeholders: placeholdersForCard)
 
                 // Dibujar los números e iconos en el cartón
                 drawBingoCard9x3(
@@ -309,7 +312,8 @@ class BingoViewModel: NSObject, ObservableObject, AVAudioPlayerDelegate, AVSpeec
                     originY: cardOriginY,
                     cardHeight: cardHeight,
                     pageWidth: pageWidth,
-                    font: font
+                    font: font,
+                    placeholderTheme: resolvedTheme
                 )
 
                 cardIndex += 1
@@ -331,41 +335,76 @@ class BingoViewModel: NSObject, ObservableObject, AVAudioPlayerDelegate, AVSpeec
         context.stroke(rect) // Dibujar borde exterior encima del grid
     }
 
-    func generateBingoCard9x3(maxNumber: Int) -> [[String]] {
+    func generateBingoCard9x3(maxNumber: Int, placeholders: [String]) -> [[String]] {
         let rows = 3
         let columns = 9
-        var bingoCard: [[String?]] = Array(repeating: Array(repeating: nil, count: columns), count: rows)
+        var bingoCard: [[Int?]] = Array(repeating: Array(repeating: nil, count: columns), count: rows)
 
-        // Distribuir números en columnas por rangos
-        let columnRanges = [
-            1...9, 10...19, 20...29, 30...39, 40...49,
-            50...59, 60...69, 70...79, 80...90
-        ]
+        // Distribuir números en columnas por rangos (90 bolas usa rangos clásicos)
+        let columnRanges = columnRangesFor(maxNumber: maxNumber, columns: columns)
 
-        for col in 0..<columns {
-            let columnNumbers = Array(columnRanges[col]).shuffled().prefix(3).sorted(by: >) // Ordenar ascendentemente
-            for row in 0..<3 {
-                bingoCard[row][col] = "\(columnNumbers[row])"
+        // 15 números por cartón, 5 por fila, 1–3 por columna
+        var columnCounts = Array(repeating: 1, count: columns)
+        var remaining = 15 - columns
+        while remaining > 0 {
+            let candidates = columnCounts.enumerated().filter { $0.element < 3 }.map { $0.offset }
+            guard let index = candidates.randomElement() else { break }
+            columnCounts[index] += 1
+            remaining -= 1
+        }
+
+        var columnRowMap = Array(repeating: [Int](), count: columns)
+        var success = false
+
+        for _ in 0..<100 {
+            columnRowMap = Array(repeating: [Int](), count: columns)
+            var rowRemaining = Array(repeating: 5, count: rows)
+            success = true
+
+            let columnOrder = (0..<columns).sorted { columnCounts[$0] > columnCounts[$1] }
+            for col in columnOrder {
+                let count = columnCounts[col]
+                let availableRows = (0..<rows).filter { rowRemaining[$0] > 0 }
+                if availableRows.count < count {
+                    success = false
+                    break
+                }
+                let selectedRows = Array(availableRows.shuffled().prefix(count))
+                columnRowMap[col] = selectedRows
+                for row in selectedRows {
+                    rowRemaining[row] -= 1
+                }
+            }
+
+            if success && rowRemaining.allSatisfy({ $0 == 0 }) {
+                break
             }
         }
 
-        // Asegurar 5 números por fila con huecos intercalados
-        let icons = ["🎄", "⭐️", "⛄️", "🎁", "❄️"]
-        for row in 0..<rows {
-            // Extraer las posiciones ocupadas
-            var filledIndices = bingoCard[row].enumerated().compactMap { $0.element != nil ? $0.offset : nil }
-            while filledIndices.count > 5 {
-                let indexToClear = filledIndices.randomElement()!
-                bingoCard[row][indexToClear] = icons.randomElement()!
-                filledIndices.removeAll { $0 == indexToClear }
+        if success {
+            for col in 0..<columns {
+                let count = columnCounts[col]
+                let numbers = Array(columnRanges[col]).shuffled().prefix(count).sorted()
+                // En PDF el eje Y crece hacia arriba, por lo que la fila "superior"
+                // es la de índice mayor. Para que el orden sea ascendente de arriba
+                // a abajo, asignamos el menor a la fila más alta.
+                let rowsForColumn = columnRowMap[col].sorted(by: >)
+                for (rowIndex, number) in zip(rowsForColumn, numbers) {
+                    bingoCard[rowIndex][col] = number
+                }
             }
         }
 
-        // Convertir nil a iconos navideños (para celdas vacías)
-        return bingoCard.map { $0.map { $0 ?? icons.randomElement()! } }
+        let fallback = placeholders.isEmpty ? "•" : placeholders[0]
+        return bingoCard.map { row in
+            row.map { value in
+                guard let value else { return placeholders.randomElement() ?? fallback }
+                return "\(value)"
+            }
+        }
     }
 
-    func drawBingoCard9x3(context: CGContext, card: [[String]], originY: CGFloat, cardHeight: CGFloat, pageWidth: CGFloat, font: Any) {
+    func drawBingoCard9x3(context: CGContext, card: [[String]], originY: CGFloat, cardHeight: CGFloat, pageWidth: CGFloat, font: Any, placeholderTheme: ThemeMode) {
         let rows = 3
         let columns = 9
         let cellWidth = pageWidth / CGFloat(columns)
@@ -408,22 +447,62 @@ class BingoViewModel: NSObject, ObservableObject, AVAudioPlayerDelegate, AVSpeec
                     let line = CTLineCreateWithAttributedString(attrString)
                     context.textPosition = CGPoint(x: textRect.minX, y: textRect.minY)
                     CTLineDraw(line, context)
-                } else {
-                    // Dibujar icono navideño
-                    drawChristmasIcon(context: context, rect: rect, icon: value)
+                } else if !value.isEmpty {
+                    // Dibujar icono en hueco
+                    drawPlaceholderIcon(context: context, rect: rect, icon: value, theme: placeholderTheme)
                 }
             }
         }
     }
 
-    func drawChristmasIcon(context: CGContext, rect: CGRect, icon: String) {
+    private func placeholderIcons(for theme: ThemeMode) -> [String] {
+        switch theme {
+        case .christmas:
+            return ["🎄", "⭐️", "⛄️", "🎁", "❄️"]
+        default:
+            return ["●", "○", "◆", "■", "▲"]
+        }
+    }
+
+    private func columnRangesFor(maxNumber: Int, columns: Int) -> [ClosedRange<Int>] {
+        guard maxNumber > 0 else { return Array(repeating: 1...1, count: columns) }
+
+        if maxNumber == 90 && columns == 9 {
+            return [
+                1...9, 10...19, 20...29, 30...39, 40...49,
+                50...59, 60...69, 70...79, 80...90
+            ]
+        }
+
+        let base = maxNumber / columns
+        let remainder = maxNumber % columns
+        var ranges: [ClosedRange<Int>] = []
+        var start = 1
+
+        for col in 0..<columns {
+            let size = base + (col < remainder ? 1 : 0)
+            let end = max(start, start + size - 1)
+            ranges.append(start...end)
+            start = end + 1
+        }
+        return ranges
+    }
+
+    private func placeholdersForCard(theme: ThemeMode, cardIndex: Int) -> [String] {
+        let icons = placeholderIcons(for: theme)
+        guard theme == .classic else { return icons }
+        let icon = icons[cardIndex % icons.count]
+        return [icon]
+    }
+
+    func drawPlaceholderIcon(context: CGContext, rect: CGRect, icon: String, theme: ThemeMode) {
         let iconFontSize = min(rect.width, rect.height) * 0.6
         #if canImport(UIKit)
         let font = UIFont.systemFont(ofSize: iconFontSize)
-        let color = UIColor.red.withAlphaComponent(0.5)
+        let color: UIColor = theme == .christmas ? UIColor.red.withAlphaComponent(0.5) : UIColor.black.withAlphaComponent(0.25)
         #else
         let font = NSFont.systemFont(ofSize: iconFontSize)
-        let color = NSColor.red.withAlphaComponent(0.5)
+        let color: NSColor = theme == .christmas ? NSColor.red.withAlphaComponent(0.5) : NSColor.black.withAlphaComponent(0.25)
         #endif
         let attributes: [NSAttributedString.Key: Any] = [
             .font: font,
