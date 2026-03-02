@@ -12,8 +12,7 @@ final class AdManager: NSObject, ObservableObject {
     private var pendingReward: (() -> Void)?
     private var pendingDismiss: (() -> Void)?
 
-    // TODO: Replace with your production AdMob rewarded unit id
-    private let adUnitID = "ca-app-pub-3940256099942544/1712485313"
+    private let adUnitID = "ca-app-pub-6739983890245057/2394185157"
 
     func start() {
         GADMobileAds.sharedInstance().start(completionHandler: nil)

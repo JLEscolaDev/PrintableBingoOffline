@@ -263,8 +263,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				"INFOPLIST_FILE[sdk=iphoneos*]" = "PrintableBingoOffline/Info-iOS.plist";
 				"INFOPLIST_FILE[sdk=iphonesimulator*]" = "PrintableBingoOffline/Info-iOS.plist";
-				"INFOPLIST_KEY_GADApplicationIdentifier[sdk=iphoneos*]" = "ca-app-pub-3940256099942544~1458002511";
-				"INFOPLIST_KEY_GADApplicationIdentifier[sdk=iphonesimulator*]" = "ca-app-pub-3940256099942544~1458002511";
+				"INFOPLIST_KEY_GADApplicationIdentifier[sdk=iphoneos*]" = "ca-app-pub-6739983890245057~3581630979";
+				"INFOPLIST_KEY_GADApplicationIdentifier[sdk=iphonesimulator*]" = "ca-app-pub-6739983890245057~3581630979";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -280,7 +280,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.LudicraLumina.printableBingoOffline.app;
-				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = com.LudicraLumina.iOS.printableBingoOffline;
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = com.LudicraLumina.printableBingoOffline.app;
 				"PRODUCT_BUNDLE_IDENTIFIER[sdk=macosx*]" = com.LudicraLumina.macOS.printableBingoOffline;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -307,8 +307,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				"INFOPLIST_FILE[sdk=iphoneos*]" = "PrintableBingoOffline/Info-iOS.plist";
 				"INFOPLIST_FILE[sdk=iphonesimulator*]" = "PrintableBingoOffline/Info-iOS.plist";
-				"INFOPLIST_KEY_GADApplicationIdentifier[sdk=iphoneos*]" = "ca-app-pub-3940256099942544~1458002511";
-				"INFOPLIST_KEY_GADApplicationIdentifier[sdk=iphonesimulator*]" = "ca-app-pub-3940256099942544~1458002511";
+				"INFOPLIST_KEY_GADApplicationIdentifier[sdk=iphoneos*]" = "ca-app-pub-6739983890245057~3581630979";
+				"INFOPLIST_KEY_GADApplicationIdentifier[sdk=iphonesimulator*]" = "ca-app-pub-6739983890245057~3581630979";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -324,7 +324,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.LudicraLumina.printableBingoOffline.app;
-				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = com.LudicraLumina.iOS.printableBingoOffline;
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = com.LudicraLumina.printableBingoOffline.app;
 				"PRODUCT_BUNDLE_IDENTIFIER[sdk=macosx*]" = com.LudicraLumina.macOS.printableBingoOffline;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
