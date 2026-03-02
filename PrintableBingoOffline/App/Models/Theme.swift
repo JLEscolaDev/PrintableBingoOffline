@@ -9,9 +9,12 @@ enum ThemeMode: String, CaseIterable, Identifiable {
 
     var displayName: String {
         switch self {
-        case .auto: return "Auto"
-        case .classic: return "Classic"
-        case .christmas: return "Navidad"
+        case .auto:
+            return String(localized: "theme.auto")
+        case .classic:
+            return String(localized: "theme.classic")
+        case .christmas:
+            return String(localized: "theme.christmas")
         }
     }
 }

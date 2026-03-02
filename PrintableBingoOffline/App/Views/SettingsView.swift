@@ -7,6 +7,40 @@
 
 import SwiftUI
 
+enum AppLanguage: String, CaseIterable, Identifiable {
+    case system
+    case en
+    case es
+    case fr
+    case de
+
+    var id: String { rawValue }
+
+    var localeIdentifier: String? {
+        switch self {
+        case .system:
+            return nil
+        case .en, .es, .fr, .de:
+            return rawValue
+        }
+    }
+
+    var displayNameKey: LocalizedStringKey {
+        switch self {
+        case .system:
+            return "settings.app_language.system"
+        case .en:
+            return "settings.app_language.en"
+        case .es:
+            return "settings.app_language.es"
+        case .fr:
+            return "settings.app_language.fr"
+        case .de:
+            return "settings.app_language.de"
+        }
+    }
+}
+
 @Observable
 class SettingsManager {
     // MARK: - Singleton
@@ -81,6 +115,20 @@ class SettingsManager {
         }
     }
 
+    var appLanguage: AppLanguage = {
+        let rawValue = UserDefaults.standard.string(forKey: "appLanguage") ?? AppLanguage.system.rawValue
+        return AppLanguage(rawValue: rawValue) ?? .system
+    }() {
+        didSet {
+            UserDefaults.standard.set(appLanguage.rawValue, forKey: "appLanguage")
+        }
+    }
+
+    var appLocale: Locale? {
+        guard let identifier = appLanguage.localeIdentifier else { return nil }
+        return Locale(identifier: identifier)
+    }
+
     // MARK: - Default init
     private init() {
         if UserDefaults.standard.object(forKey: "drawInterval") == nil {
@@ -96,7 +144,7 @@ class SettingsManager {
             jokeFrequency = 0.05
         }
         if UserDefaults.standard.object(forKey: "maxNumber") == nil {
-            maxNumber = 75
+            maxNumber = 90
         }
         if UserDefaults.standard.object(forKey: "themeMode") == nil {
             themeMode = .christmas
@@ -106,6 +154,9 @@ class SettingsManager {
         }
         if UserDefaults.standard.object(forKey: "musicVolume") == nil {
             musicVolume = 0.35
+        }
+        if UserDefaults.standard.object(forKey: "appLanguage") == nil {
+            appLanguage = .system
         }
     }
 }
@@ -117,43 +168,49 @@ struct SettingsView: View {
 
     var body: some View {
         Form {
-            Section(header: Text("Ajustes de sorteo")) {
+            Section(header: Text("settings.section.language")) {
+                Picker("settings.app_language", selection: $settings.appLanguage) {
+                    ForEach(AppLanguage.allCases) { language in
+                        Text(language.displayNameKey).tag(language)
+                    }
+                }
+                .pickerStyle(.menu)
+                Toggle("settings.use_english_audio", isOn: $settings.useEnglish)
+            }
+            Section(header: Text("settings.section.draw")) {
                 HStack {
-                    Text("Intervalo (s)")
+                    Text("settings.interval_seconds")
                     Slider(value: $settings.drawInterval, in: 1...10, step: 1)
                     Text("\(Int(settings.drawInterval))s")
                 }
-                Picker("Número Máximo", selection: $settings.maxNumber) {
-                    Text("75").tag(75)
+                Picker("settings.max_number", selection: $settings.maxNumber) {
                     Text("90").tag(90)
+                    Text("75").tag(75)
                 }
             }
-            Section(header: Text("Ajustes de audio")) {
-                Toggle("Cantar Números", isOn: $settings.shouldSpeak)
-                Toggle("Usar bromas / frases", isOn: $settings.shouldJoke)
-                Toggle("Modo Guarro", isOn: $settings.shouldGuarro)
+            Section(header: Text("settings.section.audio")) {
+                Toggle("settings.sing_numbers", isOn: $settings.shouldSpeak)
+                Toggle("settings.use_jokes", isOn: $settings.shouldJoke)
+                Toggle("settings.dirty_mode", isOn: $settings.shouldGuarro)
                     .disabled(settings.useEnglish)
                 HStack {
-                    Text("Frecuencia de frases")
+                    Text("settings.joke_frequency")
                     Slider(value: $settings.jokeFrequency, in: 0...1, step: 0.01)
                     Text("\(Int(settings.jokeFrequency * 100))%")
                         .frame(width: 50, alignment: .trailing)
                 }
                 .disabled(!settings.shouldJoke)
             }
-            Section(header: Text("Idioma")) {
-                Toggle("Usar Inglés", isOn: $settings.useEnglish)
-            }
-            Section(header: Text("Tema")) {
-                Picker("Tema", selection: $settings.themeMode) {
+            Section(header: Text("settings.section.theme")) {
+                Picker("settings.theme", selection: $settings.themeMode) {
                     ForEach(ThemeMode.allCases) { mode in
                         Text(mode.displayName).tag(mode)
                     }
                 }
                 .pickerStyle(.segmented)
             }
-            Section(header: Text("Música de Fondo")) {
-                Toggle("Música", isOn: $settings.isMusicEnabled)
+            Section(header: Text("settings.section.music")) {
+                Toggle("settings.music", isOn: $settings.isMusicEnabled)
                     .toggleStyle(SwitchToggleStyle()) // Fuerza el estilo de switch verde
                     .onChange(of: settings.isMusicEnabled) { _, isEnabled in
                         if isEnabled {
@@ -161,9 +218,9 @@ struct SettingsView: View {
                         } else {
                             audioManager.stopMusic()
                         }
-                    }
+                }
                 HStack {
-                    Text("Volumen")
+                    Text("settings.volume")
                     Slider(value: $settings.musicVolume, in: 0...1, step: 0.01)
                         .onChange(of: settings.musicVolume) { _, _ in
                             audioManager.applyPerceptualVolume()
@@ -172,7 +229,7 @@ struct SettingsView: View {
                         .frame(width: 50, alignment: .trailing)
                 }
             }
-            Button("Cerrar") {
+            Button("common.close") {
                 dismiss()
             }
             .frame(maxWidth: .infinity)

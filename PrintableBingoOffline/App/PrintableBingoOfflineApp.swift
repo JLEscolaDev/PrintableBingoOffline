@@ -14,11 +14,13 @@ struct PrintableBingoOfflineApp: App {
     @StateObject private var creditsManager = CreditsManager()
     @StateObject private var purchaseManager = PurchaseManager()
     @StateObject private var adManager = AdManager()
+    @State private var settings = SettingsManager.shared
     @Environment(\.scenePhase) var scenePhase
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            localizedView(
+                ContentView()
                 .environmentObject(viewModel)
                 .environmentObject(creditsManager)
                 .environmentObject(purchaseManager)
@@ -30,6 +32,7 @@ struct PrintableBingoOfflineApp: App {
                     adManager.start()
                     #endif
                 }
+            )
         }.onChange(of: scenePhase) { oldPhase, newPhase in
             if newPhase == .active {
                 audioManager.playIfEnabled()
@@ -43,9 +46,20 @@ struct PrintableBingoOfflineApp: App {
         }
         #if os(macOS)
         Settings {
-            SettingsView()
+            localizedView(
+                SettingsView()
                 .environmentObject(viewModel) // Pasar el modelo también a los ajustes
+            )
         }
         #endif
+    }
+
+    @ViewBuilder
+    private func localizedView<Content: View>(_ content: Content) -> some View {
+        if let appLocale = settings.appLocale {
+            content.environment(\.locale, appLocale)
+        } else {
+            content
+        }
     }
 }

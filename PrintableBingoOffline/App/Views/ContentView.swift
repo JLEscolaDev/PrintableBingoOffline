@@ -58,10 +58,11 @@ struct ContentView: View {
     private var content: some View {
         GeometryReader { geometry in
             let isCompact = (horizontalSizeClass == .compact) || geometry.size.width < 700
+            let useSingleRowCompactTopBar = geometry.size.width > geometry.size.height && geometry.size.width >= 760
 
             if isCompact {
                 VStack(alignment: .leading, spacing: 12) {
-                    topBarCompact
+                    topBarCompact(singleRow: useSingleRowCompactTopBar)
                     lastNumbersCompact
                     captionView(compact: true)
                     NumbersGridView(allNumbers: viewModel.allNumbers(), drawnNumbers: viewModel.drawnNumbers, compact: true)
@@ -88,28 +89,27 @@ struct ContentView: View {
     }
 
     private var topBarRegular: some View {
-        VStack(spacing: 8) {
+        HStack(spacing: 12) {
             HStack(spacing: 8) {
-                controlButton(title: "Start", systemImage: "play.fill", compact: false, iconOnly: false) {
+                controlButton(titleKey: "control.start", systemImage: "play.fill", compact: false, iconOnly: false) {
                     attemptStart()
                 }
-                controlButton(title: "Stop", systemImage: "pause.fill", compact: false, iconOnly: false) {
+                controlButton(titleKey: "control.stop", systemImage: "pause.fill", compact: false, iconOnly: false) {
                     viewModel.stopDrawing()
                 }
-                controlButton(title: "Reset", systemImage: "arrow.counterclockwise", compact: false, iconOnly: false) {
+                controlButton(titleKey: "control.reset", systemImage: "arrow.counterclockwise", compact: false, iconOnly: false) {
                     viewModel.resetGame()
                     if resolvedTheme == .christmas {
                         christmasBackground = "ChristmasBackground\(Int.random(in: 1...10))"
                     }
                 }
-            }
-            HStack(spacing: 8) {
-                controlButton(title: "PDF", systemImage: "doc.fill", compact: false, iconOnly: false) {
+                controlButton(titleKey: "control.pdf", systemImage: "doc.fill", compact: false, iconOnly: false) {
                     generatePDF()
                 }
+            }
+            .frame(maxWidth: .infinity, alignment: .center)
 
-                Spacer()
-
+            HStack(spacing: 8) {
                 CoinBadgeView(credits: creditsManager.credits, isPro: purchaseManager.isPro)
 
                 Button {
@@ -131,39 +131,71 @@ struct ContentView: View {
         }
     }
 
-    private var topBarCompact: some View {
+    private func topBarCompact(singleRow: Bool) -> some View {
         VStack(spacing: 6) {
-            HStack(spacing: 6) {
-                controlButton(title: "Start", systemImage: "play.fill", compact: true, iconOnly: true) {
-                    attemptStart()
-                }
-                controlButton(title: "Stop", systemImage: "pause.fill", compact: true, iconOnly: true) {
-                    viewModel.stopDrawing()
-                }
-                controlButton(title: "Reset", systemImage: "arrow.counterclockwise", compact: true, iconOnly: true) {
-                    viewModel.resetGame()
-                    if resolvedTheme == .christmas {
-                        christmasBackground = "ChristmasBackground\(Int.random(in: 1...10))"
+            if singleRow {
+                HStack(spacing: 6) {
+                    controlButton(titleKey: "control.start", systemImage: "play.fill", compact: true, iconOnly: true) {
+                        attemptStart()
                     }
+                    controlButton(titleKey: "control.stop", systemImage: "pause.fill", compact: true, iconOnly: true) {
+                        viewModel.stopDrawing()
+                    }
+                    controlButton(titleKey: "control.reset", systemImage: "arrow.counterclockwise", compact: true, iconOnly: true) {
+                        viewModel.resetGame()
+                        if resolvedTheme == .christmas {
+                            christmasBackground = "ChristmasBackground\(Int.random(in: 1...10))"
+                        }
+                    }
+                    controlButton(titleKey: "control.pdf", systemImage: "doc.fill", compact: true, iconOnly: false) {
+                        generatePDF()
+                    }
+                    Spacer()
+                    CoinBadgeView(credits: creditsManager.credits, isPro: purchaseManager.isPro)
+                    Button {
+                        showSettings = true
+                    } label: {
+                        Image(systemName: "gear")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 18, height: 18)
+                            .padding(.horizontal, 2)
+                    }
+                    .buttonStyle(UnifiedButtonStyle(compact: true))
                 }
-                Spacer()
-            }
-            HStack(spacing: 6) {
-                controlButton(title: "PDF", systemImage: "doc.fill", compact: true, iconOnly: false) {
-                    generatePDF()
+            } else {
+                HStack(spacing: 6) {
+                    controlButton(titleKey: "control.start", systemImage: "play.fill", compact: true, iconOnly: true) {
+                        attemptStart()
+                    }
+                    controlButton(titleKey: "control.stop", systemImage: "pause.fill", compact: true, iconOnly: true) {
+                        viewModel.stopDrawing()
+                    }
+                    controlButton(titleKey: "control.reset", systemImage: "arrow.counterclockwise", compact: true, iconOnly: true) {
+                        viewModel.resetGame()
+                        if resolvedTheme == .christmas {
+                            christmasBackground = "ChristmasBackground\(Int.random(in: 1...10))"
+                        }
+                    }
+                    Spacer()
                 }
-                Spacer()
-                CoinBadgeView(credits: creditsManager.credits, isPro: purchaseManager.isPro)
-                Button {
-                    showSettings = true
-                } label: {
-                    Image(systemName: "gear")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 18, height: 18)
-                        .padding(.horizontal, 2)
+                HStack(spacing: 6) {
+                    controlButton(titleKey: "control.pdf", systemImage: "doc.fill", compact: true, iconOnly: false) {
+                        generatePDF()
+                    }
+                    Spacer()
+                    CoinBadgeView(credits: creditsManager.credits, isPro: purchaseManager.isPro)
+                    Button {
+                        showSettings = true
+                    } label: {
+                        Image(systemName: "gear")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 18, height: 18)
+                            .padding(.horizontal, 2)
+                    }
+                    .buttonStyle(UnifiedButtonStyle(compact: true))
                 }
-                .buttonStyle(UnifiedButtonStyle(compact: true))
             }
         }
         .padding(10)
@@ -175,7 +207,7 @@ struct ContentView: View {
 
     private var lastNumbersCompact: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Últimos 5 números:")
+            Text("label.last_five_numbers")
                 .font(.subheadline)
                 .bold()
                 .foregroundStyle(.white)
@@ -195,13 +227,13 @@ struct ContentView: View {
         )
     }
 
-    private func controlButton(title: String, systemImage: String, compact: Bool, iconOnly: Bool, action: @escaping () -> Void) -> some View {
+    private func controlButton(titleKey: LocalizedStringKey, systemImage: String, compact: Bool, iconOnly: Bool, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             if iconOnly {
-                Label(title, systemImage: systemImage)
+                Label(titleKey, systemImage: systemImage)
                     .labelStyle(.iconOnly)
             } else {
-                Label(title, systemImage: systemImage)
+                Label(titleKey, systemImage: systemImage)
                     .labelStyle(.titleAndIcon)
                     .lineLimit(1)
                     .minimumScaleFactor(0.8)
@@ -244,8 +276,6 @@ struct ContentView: View {
                     Image(christmasBackground)
                         .resizable()
                         .scaledToFill()
-                        .frame(width: geometry.size.width, height: geometry.size.height)
-                        .clipped()
                         .ignoresSafeArea()
 
                     VStack {
@@ -287,6 +317,7 @@ struct ContentView: View {
                 }
             }
         }
+        .ignoresSafeArea()
     }
 
     private var scene: SKScene {

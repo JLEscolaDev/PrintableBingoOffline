@@ -26,7 +26,7 @@ struct LastDrawnNumbersView: View {
                 geometry.size.width/5
             }
             VStack(alignment: .leading) {
-                Text("Últimos 5 números:")
+                Text("label.last_five_numbers")
                     .font(compact ? .headline : .title)
                     .bold()
                     .shadow(radius: 2)

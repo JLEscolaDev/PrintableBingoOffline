@@ -95,7 +95,10 @@
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				de,
 				en,
+				es,
+				fr,
 				Base,
 			);
 			mainGroup = 78EA68D22D12CD9B006EBE8D;
@@ -255,7 +258,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = PrintableBingoOffline/PrintableBingoOffline.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"PrintableBingoOffline/Preview Content\"";
 				DEVELOPMENT_TEAM = XSXBSCC4SL;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -299,7 +302,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = PrintableBingoOffline/PrintableBingoOffline.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"PrintableBingoOffline/Preview Content\"";
 				DEVELOPMENT_TEAM = XSXBSCC4SL;
 				ENABLE_HARDENED_RUNTIME = YES;
