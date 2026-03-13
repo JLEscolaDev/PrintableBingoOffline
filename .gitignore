@@ -1,0 +1,10 @@
+.DS_Store
+.deriveddata/
+.deriveddata-macos/
+DerivedData/
+*.xcuserdatad/
+*.xcuserdata/
+*.xcbkptlist
+*.xcworkspace/
+xcuserdata/
+*.log
