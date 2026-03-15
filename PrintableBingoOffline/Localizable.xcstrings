@@ -1257,6 +1257,7 @@
       }
     },
     "settings.use_english_audio" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {

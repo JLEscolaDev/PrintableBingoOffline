@@ -58,7 +58,15 @@ struct ContentView: View {
     private var content: some View {
         GeometryReader { geometry in
             let isCompact = (horizontalSizeClass == .compact) || geometry.size.width < 700
-            let useSingleRowCompactTopBar = geometry.size.width > geometry.size.height && geometry.size.width >= 760
+            let useSingleRowCompactTopBar: Bool = {
+                #if os(iOS)
+                UIDevice.current.userInterfaceIdiom == .phone &&
+                geometry.size.width > geometry.size.height &&
+                geometry.size.width >= 620
+                #else
+                false
+                #endif
+            }()
 
             if isCompact {
                 VStack(alignment: .leading, spacing: 12) {
@@ -89,7 +97,7 @@ struct ContentView: View {
     }
 
     private var topBarRegular: some View {
-        HStack(spacing: 12) {
+        VStack(spacing: 8) {
             HStack(spacing: 8) {
                 controlButton(titleKey: "control.start", systemImage: "play.fill", compact: false, iconOnly: false) {
                     attemptStart()
@@ -103,13 +111,14 @@ struct ContentView: View {
                         christmasBackground = "ChristmasBackground\(Int.random(in: 1...10))"
                     }
                 }
+
+                Spacer()
+            }
+            HStack(spacing: 8) {
                 controlButton(titleKey: "control.pdf", systemImage: "doc.fill", compact: false, iconOnly: false) {
                     generatePDF()
                 }
-            }
-            .frame(maxWidth: .infinity, alignment: .center)
-
-            HStack(spacing: 8) {
+                Spacer()
                 CoinBadgeView(credits: creditsManager.credits, isPro: purchaseManager.isPro)
 
                 Button {
@@ -147,10 +156,11 @@ struct ContentView: View {
                             christmasBackground = "ChristmasBackground\(Int.random(in: 1...10))"
                         }
                     }
+                    Spacer(minLength: 8)
                     controlButton(titleKey: "control.pdf", systemImage: "doc.fill", compact: true, iconOnly: false) {
                         generatePDF()
                     }
-                    Spacer()
+                    Spacer(minLength: 8)
                     CoinBadgeView(credits: creditsManager.credits, isPro: purchaseManager.isPro)
                     Button {
                         showSettings = true
@@ -330,6 +340,11 @@ struct ContentView: View {
     private func attemptStart() {
         guard !viewModel.isDrawing else { return }
         if purchaseManager.isPro {
+            viewModel.startDrawing()
+            return
+        }
+
+        if viewModel.isResumingCurrentGame {
             viewModel.startDrawing()
             return
         }

@@ -11,6 +11,7 @@ struct PaywallView: View {
     @EnvironmentObject private var purchaseManager: PurchaseManager
     @EnvironmentObject private var adManager: AdManager
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.locale) private var locale
 
     let reason: PaywallReason
 
@@ -32,9 +33,24 @@ struct PaywallView: View {
         reason == .postGame ? "paywall.title.recharge_coins_question" : "paywall.title.need_coins"
     }
 
+    private func localizedBundle() -> Bundle {
+        let candidates = [
+            locale.identifier,
+            locale.language.languageCode?.identifier
+        ].compactMap { $0 }
+
+        for code in candidates {
+            if let path = Bundle.main.path(forResource: code, ofType: "lproj"),
+               let bundle = Bundle(path: path) {
+                return bundle
+            }
+        }
+        return .main
+    }
+
     private func localizedFormat(_ key: String, _ arguments: CVarArg...) -> String {
-        let format = NSLocalizedString(key, comment: "")
-        return String(format: format, locale: Locale.current, arguments: arguments)
+        let format = localizedBundle().localizedString(forKey: key, value: nil, table: nil)
+        return String(format: format, locale: locale, arguments: arguments)
     }
 
     private var missingCoinsText: String {

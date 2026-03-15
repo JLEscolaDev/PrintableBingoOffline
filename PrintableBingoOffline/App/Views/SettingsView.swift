@@ -87,13 +87,6 @@ class SettingsManager {
         }
     }
 
-    var useEnglish: Bool = UserDefaults.standard.bool(forKey: "useEnglish") {
-        didSet {
-            UserDefaults.standard.set(useEnglish, forKey: "useEnglish")
-            shouldGuarro = false // There are no dirty rhymes for english version
-        }
-    }
-
     var themeMode: ThemeMode = {
         let rawValue = UserDefaults.standard.string(forKey: "themeMode") ?? ThemeMode.christmas.rawValue
         return ThemeMode(rawValue: rawValue) ?? .christmas
@@ -121,6 +114,14 @@ class SettingsManager {
     }() {
         didSet {
             UserDefaults.standard.set(appLanguage.rawValue, forKey: "appLanguage")
+            // Keep legacy flag in sync for backwards compatibility.
+            UserDefaults.standard.set(effectiveLanguageCode == "en", forKey: "useEnglish")
+            if !isJokesAvailable {
+                shouldJoke = false
+            }
+            if !isDirtyModeAvailable {
+                shouldGuarro = false
+            }
         }
     }
 
@@ -129,10 +130,58 @@ class SettingsManager {
         return Locale(identifier: identifier)
     }
 
+    var effectiveLanguageCode: String {
+        switch appLanguage {
+        case .system:
+            let code = systemLanguageCode()
+            return ["en", "es", "fr", "de"].contains(code) ? code : "es"
+        case .en:
+            return "en"
+        case .es:
+            return "es"
+        case .fr:
+            return "fr"
+        case .de:
+            return "de"
+        }
+    }
+
+    var preferredVoiceAssetLanguage: String? {
+        switch effectiveLanguageCode {
+        case "en":
+            return "English"
+        case "es":
+            return "Spanish"
+        default:
+            return nil
+        }
+    }
+
+    var voiceLocaleIdentifier: String {
+        switch effectiveLanguageCode {
+        case "en":
+            return "en-US"
+        case "fr":
+            return "fr-FR"
+        case "de":
+            return "de-DE"
+        default:
+            return "es-ES"
+        }
+    }
+
+    var isDirtyModeAvailable: Bool {
+        effectiveLanguageCode == "es"
+    }
+
+    var isJokesAvailable: Bool {
+        effectiveLanguageCode == "es"
+    }
+
     // MARK: - Default init
     private init() {
         if UserDefaults.standard.object(forKey: "drawInterval") == nil {
-            drawInterval = 5.0
+            drawInterval = 2.0
         }
         if UserDefaults.standard.object(forKey: "shouldSpeak") == nil {
             shouldSpeak = true
@@ -158,6 +207,23 @@ class SettingsManager {
         if UserDefaults.standard.object(forKey: "appLanguage") == nil {
             appLanguage = .system
         }
+        UserDefaults.standard.set(effectiveLanguageCode == "en", forKey: "useEnglish")
+        if !isJokesAvailable {
+            shouldJoke = false
+        }
+        if !isDirtyModeAvailable {
+            shouldGuarro = false
+        }
+    }
+
+    private func systemLanguageCode() -> String {
+        if #available(iOS 16.0, macOS 13.0, *) {
+            if let code = Locale.autoupdatingCurrent.language.languageCode?.identifier {
+                return code.lowercased()
+            }
+        }
+        let identifier = Locale.autoupdatingCurrent.identifier.lowercased()
+        return String(identifier.prefix(2))
     }
 }
 
@@ -175,7 +241,6 @@ struct SettingsView: View {
                     }
                 }
                 .pickerStyle(.menu)
-                Toggle("settings.use_english_audio", isOn: $settings.useEnglish)
             }
             Section(header: Text("settings.section.draw")) {
                 HStack {
@@ -191,20 +256,21 @@ struct SettingsView: View {
             Section(header: Text("settings.section.audio")) {
                 Toggle("settings.sing_numbers", isOn: $settings.shouldSpeak)
                 Toggle("settings.use_jokes", isOn: $settings.shouldJoke)
+                    .disabled(!settings.isJokesAvailable)
                 Toggle("settings.dirty_mode", isOn: $settings.shouldGuarro)
-                    .disabled(settings.useEnglish)
+                    .disabled(!settings.isDirtyModeAvailable)
                 HStack {
                     Text("settings.joke_frequency")
                     Slider(value: $settings.jokeFrequency, in: 0...1, step: 0.01)
                     Text("\(Int(settings.jokeFrequency * 100))%")
                         .frame(width: 50, alignment: .trailing)
                 }
-                .disabled(!settings.shouldJoke)
+                .disabled(!settings.shouldJoke || !settings.isJokesAvailable)
             }
             Section(header: Text("settings.section.theme")) {
                 Picker("settings.theme", selection: $settings.themeMode) {
                     ForEach(ThemeMode.allCases) { mode in
-                        Text(mode.displayName).tag(mode)
+                        Text(LocalizedStringKey(mode.displayNameKey)).tag(mode)
                     }
                 }
                 .pickerStyle(.segmented)

@@ -41,6 +41,7 @@ struct PrintableBingoOfflineApp: App {
                 adManager.start()
                 #endif
             } else {
+                viewModel.stopDrawing()
                 audioManager.stopMusic()
             }
         }

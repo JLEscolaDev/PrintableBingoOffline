@@ -7,14 +7,11 @@ enum ThemeMode: String, CaseIterable, Identifiable {
 
     var id: String { rawValue }
 
-    var displayName: String {
+    var displayNameKey: String {
         switch self {
-        case .auto:
-            return String(localized: "theme.auto")
-        case .classic:
-            return String(localized: "theme.classic")
-        case .christmas:
-            return String(localized: "theme.christmas")
+        case .auto: return "theme.auto"
+        case .classic: return "theme.classic"
+        case .christmas: return "theme.christmas"
         }
     }
 }
