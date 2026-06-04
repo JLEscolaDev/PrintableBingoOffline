@@ -8,13 +8,26 @@ final class PurchaseManager: ObservableObject {
     @Published var isLoading: Bool = false
     @Published var lastError: String? = nil
 
-    private let productIDs: [String] = [
+    private let proProductIDs: [String] = [
         "com.printablebingo.pro.weekly",
         "com.printablebingo.pro.monthly",
         "com.printablebingo.pro.lifetime"
     ]
+    private let supportProductIDs: [String] = [
+        "com.printablebingo.support.coffee",
+        "com.printablebingo.support.breakfast",
+        "com.printablebingo.support.project"
+    ]
 
     private var updatesTask: Task<Void, Never>?
+
+    var proProducts: [Product] {
+        products.filter { proProductIDs.contains($0.id) }
+    }
+
+    var supportProducts: [Product] {
+        products.filter { supportProductIDs.contains($0.id) }
+    }
 
     init() {
         updatesTask = Task {
@@ -22,6 +35,7 @@ final class PurchaseManager: ObservableObject {
         }
         Task {
             await updateEntitlements()
+            await refreshProducts()
         }
     }
 
@@ -31,8 +45,10 @@ final class PurchaseManager: ObservableObject {
 
     func refreshProducts() async {
         isLoading = true
+        lastError = nil
         defer { isLoading = false }
         do {
+            let productIDs = proProductIDs + supportProductIDs
             let storeProducts = try await Product.products(for: productIDs)
             products = storeProducts.sorted { lhs, rhs in
                 productIDs.firstIndex(of: lhs.id) ?? 0 < productIDs.firstIndex(of: rhs.id) ?? 0
@@ -42,7 +58,8 @@ final class PurchaseManager: ObservableObject {
         }
     }
 
-    func purchase(_ product: Product) async {
+    func purchase(_ product: Product) async -> Bool {
+        lastError = nil
         do {
             let result = try await product.purchase()
             switch result {
@@ -50,17 +67,20 @@ final class PurchaseManager: ObservableObject {
                 let transaction = try checkVerified(verification)
                 await transaction.finish()
                 await updateEntitlements()
+                return true
             case .userCancelled, .pending:
-                break
+                return false
             @unknown default:
-                break
+                return false
             }
         } catch {
             lastError = error.localizedDescription
         }
+        return false
     }
 
     func restorePurchases() async {
+        lastError = nil
         do {
             try await AppStore.sync()
             await updateEntitlements()
@@ -69,12 +89,16 @@ final class PurchaseManager: ObservableObject {
         }
     }
 
+    func clearError() {
+        lastError = nil
+    }
+
     private func updateEntitlements() async {
         var hasPro = false
         for await result in Transaction.currentEntitlements {
             do {
                 let transaction = try checkVerified(result)
-                if productIDs.contains(transaction.productID) {
+                if proProductIDs.contains(transaction.productID) {
                     hasPro = true
                 }
             } catch {
@@ -88,7 +112,7 @@ final class PurchaseManager: ObservableObject {
         for await result in Transaction.updates {
             do {
                 let transaction = try checkVerified(result)
-                if productIDs.contains(transaction.productID) {
+                if proProductIDs.contains(transaction.productID) {
                     await updateEntitlements()
                 }
                 await transaction.finish()

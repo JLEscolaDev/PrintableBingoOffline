@@ -15,6 +15,11 @@ import AppKit
 #endif
 
 struct ContentView: View {
+    private enum Screen {
+        case home
+        case game
+    }
+
     @EnvironmentObject private var viewModel: BingoViewModel
     @EnvironmentObject private var creditsManager: CreditsManager
     @EnvironmentObject private var purchaseManager: PurchaseManager
@@ -23,14 +28,20 @@ struct ContentView: View {
 
     @State private var showSettings = false
     @State private var showPaywall = false
+    @State private var showCoffeeSupport = false
     @State private var paywallReason: PaywallReason = .insufficientCoins
-    @State private var christmasBackground: String = "ChristmasBackground1"
+    @State private var rotatingThemeBackground: String = "ChristmasBackground1"
+    @State private var currentScreen: Screen = .home
     @State private var settings = SettingsManager.shared
 
     var body: some View {
         ZStack {
             themedBackground
-            content
+            if currentScreen == .home {
+                homeContent
+            } else {
+                gameContent
+            }
         }
         .sheet(isPresented: $showSettings) {
             SettingsView()
@@ -40,6 +51,17 @@ struct ContentView: View {
                 .environmentObject(creditsManager)
                 .environmentObject(purchaseManager)
                 .environmentObject(adManager)
+                #if os(macOS)
+                .frame(minWidth: 560, idealWidth: 640, minHeight: 520, idealHeight: 620)
+                #endif
+        }
+        .sheet(isPresented: $showCoffeeSupport) {
+            CoffeeSupportView()
+                .environmentObject(creditsManager)
+                .environmentObject(purchaseManager)
+                #if os(macOS)
+                .frame(minWidth: 420, idealWidth: 460)
+                #endif
         }
         .onChange(of: viewModel.didFinishGame) { _, finished in
             guard finished else { return }
@@ -49,13 +71,80 @@ struct ContentView: View {
             showPaywall = true
         }
         .onChange(of: settings.themeMode) { _, _ in
-            if resolvedTheme == .christmas {
-                christmasBackground = "ChristmasBackground\(Int.random(in: 1...10))"
-            }
+            refreshRotatingThemeBackground()
+        }
+        .onAppear {
+            refreshRotatingThemeBackground()
         }
     }
 
-    private var content: some View {
+    private var homeContent: some View {
+        GeometryReader { geometry in
+            let wideLayout = geometry.size.width > 780
+
+            VStack(spacing: 24) {
+                Spacer(minLength: wideLayout ? 40 : 24)
+
+                VStack(spacing: 12) {
+                    Text("Printable Bingo Offline")
+                        .font(wideLayout ? .largeTitle.bold() : .title.bold())
+                        .foregroundStyle(.white)
+
+                    Text(purchaseManager.isPro ? "Modo Pro activo. Juega sin límites." : "Juega rápido, recarga monedas cuando quieras y desbloquea Pro cuando te compense.")
+                        .font(wideLayout ? .title3 : .body)
+                        .multilineTextAlignment(.center)
+                        .foregroundStyle(.white.opacity(0.85))
+                        .frame(maxWidth: 680)
+                }
+
+                CoinBadgeView(credits: creditsManager.credits, isPro: purchaseManager.isPro)
+
+                VStack(spacing: 14) {
+                    Button {
+                        openGameScreen()
+                    } label: {
+                        Label(viewModel.isResumingCurrentGame ? "Continuar partida" : "Jugar", systemImage: "play.fill")
+                            .frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(UnifiedButtonStyle())
+
+                    Button {
+                        openPaywall()
+                    } label: {
+                        Label("Conseguir monedas", systemImage: "star.circle.fill")
+                            .frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(UnifiedButtonStyle())
+
+                    HStack(spacing: 12) {
+                        Button {
+                            showSettings = true
+                        } label: {
+                            Label("Ajustes", systemImage: "gear")
+                                .frame(maxWidth: .infinity)
+                        }
+                        .buttonStyle(UnifiedButtonStyle())
+
+                        Button {
+                            showCoffeeSupport = true
+                        } label: {
+                            Label("Invítame a un café", systemImage: "cup.and.saucer.fill")
+                                .frame(maxWidth: .infinity)
+                        }
+                        .buttonStyle(UnifiedButtonStyle())
+                    }
+                }
+                .frame(maxWidth: wideLayout ? 460 : .infinity)
+
+                Spacer()
+            }
+            .padding(.horizontal, wideLayout ? 40 : 20)
+            .padding(.vertical, 24)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
+    }
+
+    private var gameContent: some View {
         GeometryReader { geometry in
             let isCompact = (horizontalSizeClass == .compact) || geometry.size.width < 700
             let useSingleRowCompactTopBar: Bool = {
@@ -99,6 +188,9 @@ struct ContentView: View {
     private var topBarRegular: some View {
         VStack(spacing: 8) {
             HStack(spacing: 8) {
+                controlButton(titleKey: "Inicio", systemImage: "house.fill", compact: false, iconOnly: true) {
+                    currentScreen = .home
+                }
                 controlButton(titleKey: "control.start", systemImage: "play.fill", compact: false, iconOnly: false) {
                     attemptStart()
                 }
@@ -107,9 +199,7 @@ struct ContentView: View {
                 }
                 controlButton(titleKey: "control.reset", systemImage: "arrow.counterclockwise", compact: false, iconOnly: false) {
                     viewModel.resetGame()
-                    if resolvedTheme == .christmas {
-                        christmasBackground = "ChristmasBackground\(Int.random(in: 1...10))"
-                    }
+                    refreshRotatingThemeBackground()
                 }
 
                 Spacer()
@@ -119,7 +209,7 @@ struct ContentView: View {
                     generatePDF()
                 }
                 Spacer()
-                CoinBadgeView(credits: creditsManager.credits, isPro: purchaseManager.isPro)
+                paywallButton(compact: false)
 
                 Button {
                     showSettings = true
@@ -144,6 +234,9 @@ struct ContentView: View {
         VStack(spacing: 6) {
             if singleRow {
                 HStack(spacing: 6) {
+                    controlButton(titleKey: "Inicio", systemImage: "house.fill", compact: true, iconOnly: true) {
+                        currentScreen = .home
+                    }
                     controlButton(titleKey: "control.start", systemImage: "play.fill", compact: true, iconOnly: true) {
                         attemptStart()
                     }
@@ -152,16 +245,14 @@ struct ContentView: View {
                     }
                     controlButton(titleKey: "control.reset", systemImage: "arrow.counterclockwise", compact: true, iconOnly: true) {
                         viewModel.resetGame()
-                        if resolvedTheme == .christmas {
-                            christmasBackground = "ChristmasBackground\(Int.random(in: 1...10))"
-                        }
+                        refreshRotatingThemeBackground()
                     }
                     Spacer(minLength: 8)
                     controlButton(titleKey: "control.pdf", systemImage: "doc.fill", compact: true, iconOnly: false) {
                         generatePDF()
                     }
                     Spacer(minLength: 8)
-                    CoinBadgeView(credits: creditsManager.credits, isPro: purchaseManager.isPro)
+                    paywallButton(compact: true)
                     Button {
                         showSettings = true
                     } label: {
@@ -175,6 +266,9 @@ struct ContentView: View {
                 }
             } else {
                 HStack(spacing: 6) {
+                    controlButton(titleKey: "Inicio", systemImage: "house.fill", compact: true, iconOnly: true) {
+                        currentScreen = .home
+                    }
                     controlButton(titleKey: "control.start", systemImage: "play.fill", compact: true, iconOnly: true) {
                         attemptStart()
                     }
@@ -183,9 +277,7 @@ struct ContentView: View {
                     }
                     controlButton(titleKey: "control.reset", systemImage: "arrow.counterclockwise", compact: true, iconOnly: true) {
                         viewModel.resetGame()
-                        if resolvedTheme == .christmas {
-                            christmasBackground = "ChristmasBackground\(Int.random(in: 1...10))"
-                        }
+                        refreshRotatingThemeBackground()
                     }
                     Spacer()
                 }
@@ -194,7 +286,7 @@ struct ContentView: View {
                         generatePDF()
                     }
                     Spacer()
-                    CoinBadgeView(credits: creditsManager.credits, isPro: purchaseManager.isPro)
+                    paywallButton(compact: true)
                     Button {
                         showSettings = true
                     } label: {
@@ -252,6 +344,21 @@ struct ContentView: View {
         .buttonStyle(UnifiedButtonStyle(compact: compact))
     }
 
+    private func paywallButton(compact: Bool) -> some View {
+        Button {
+            openPaywall()
+        } label: {
+            HStack(spacing: compact ? 6 : 8) {
+                CoinBadgeView(credits: creditsManager.credits, isPro: purchaseManager.isPro)
+                Image(systemName: purchaseManager.isPro ? "star.circle.fill" : "plus.circle.fill")
+                    .font(compact ? .subheadline : .headline)
+                    .foregroundStyle(.white.opacity(0.9))
+            }
+        }
+        .buttonStyle(.plain)
+        .help(purchaseManager.isPro ? "Gestionar compras Pro" : "Conseguir monedas o activar Pro")
+    }
+
     private func captionView(compact: Bool) -> some View {
         Group {
             if let caption = viewModel.currentCaption {
@@ -282,37 +389,46 @@ struct ContentView: View {
     private var themedBackground: some View {
         GeometryReader { geometry in
             ZStack {
-                if resolvedTheme == .christmas {
-                    Image(christmasBackground)
+                if resolvedTheme == .christmas || resolvedTheme == .lucky {
+                    Image(rotatingThemeBackground)
                         .resizable()
                         .scaledToFill()
                         .ignoresSafeArea()
 
-                    VStack {
-                        HStack(spacing: -100) {
-                            Image(.cloud1)
-                                .resizable()
-                                .frame(width: 300, height: 300)
-                                .offset(x: 200)
-                            Image(.cloud2)
-                                .resizable()
-                                .frame(width: 600, height: 300)
-                            Image(.cloud2)
-                                .resizable()
-                                .frame(width: 600, height: 300)
-                                .offset(x: -100)
-                            Image(.cloud3)
-                                .resizable()
-                                .frame(width: 300, height: 300)
-                                .offset(x: -100)
+                    if resolvedTheme == .christmas {
+                        VStack {
+                            HStack(spacing: -100) {
+                                Image(.cloud1)
+                                    .resizable()
+                                    .frame(width: 300, height: 300)
+                                    .offset(x: 200)
+                                Image(.cloud2)
+                                    .resizable()
+                                    .frame(width: 600, height: 300)
+                                Image(.cloud2)
+                                    .resizable()
+                                    .frame(width: 600, height: 300)
+                                    .offset(x: -100)
+                                Image(.cloud3)
+                                    .resizable()
+                                    .frame(width: 300, height: 300)
+                                    .offset(x: -100)
+                            }
+                            SpriteView(scene: scene, options: [.allowsTransparency])
+                                .offset(y: -180)
+                                .frame(minWidth: 0, maxWidth: 1000, minHeight: 0, maxHeight: geometry.size.height)
+                                .ignoresSafeArea()
                         }
-                        SpriteView(scene: scene, options: [.allowsTransparency])
-                            .offset(y: -180)
-                            .frame(minWidth: 0, maxWidth: 1000, minHeight: 0, maxHeight: geometry.size.height)
-                            .ignoresSafeArea()
+                        .offset(y: -geometry.size.height / 2)
+                        .frame(width: geometry.size.width, height: geometry.size.height)
+                    } else {
+                        LinearGradient(
+                            colors: [.black.opacity(0.15), .yellow.opacity(0.08)],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                        .ignoresSafeArea()
                     }
-                    .offset(y: -geometry.size.height / 2)
-                    .frame(width: geometry.size.width, height: geometry.size.height)
                 } else {
                     LinearGradient(
                         colors: [Color(red: 0.1, green: 0.12, blue: 0.16), Color(red: 0.2, green: 0.24, blue: 0.3)],
@@ -337,14 +453,25 @@ struct ContentView: View {
         return scene
     }
 
+    private func refreshRotatingThemeBackground() {
+        switch resolvedTheme {
+        case .christmas:
+            rotatingThemeBackground = "ChristmasBackground\(Int.random(in: 1...10))"
+        case .lucky:
+            rotatingThemeBackground = "LuckyBackground\(Int.random(in: 1...9))"
+        default:
+            rotatingThemeBackground = "ChristmasBackground1"
+        }
+    }
+
+    private func openGameScreen() {
+        currentScreen = .game
+    }
+
     private func attemptStart() {
         guard !viewModel.isDrawing else { return }
-        if purchaseManager.isPro {
-            viewModel.startDrawing()
-            return
-        }
 
-        if viewModel.isResumingCurrentGame {
+        if purchaseManager.isPro || viewModel.isResumingCurrentGame {
             viewModel.startDrawing()
             return
         }
@@ -355,6 +482,11 @@ struct ContentView: View {
             paywallReason = .insufficientCoins
             showPaywall = true
         }
+    }
+
+    private func openPaywall() {
+        paywallReason = creditsManager.canAffordGame() ? .postGame : .insufficientCoins
+        showPaywall = true
     }
 
     private func generatePDF() {

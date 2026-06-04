@@ -92,7 +92,20 @@ class SettingsManager {
         return ThemeMode(rawValue: rawValue) ?? .christmas
     }() {
         didSet {
+            if themeMode == .lucky && !hasLuckyThemeUnlocked {
+                themeMode = .christmas
+                return
+            }
             UserDefaults.standard.set(themeMode.rawValue, forKey: "themeMode")
+        }
+    }
+
+    var hasLuckyThemeUnlocked: Bool = UserDefaults.standard.bool(forKey: "hasLuckyThemeUnlocked") {
+        didSet {
+            UserDefaults.standard.set(hasLuckyThemeUnlocked, forKey: "hasLuckyThemeUnlocked")
+            if !hasLuckyThemeUnlocked && themeMode == .lucky {
+                themeMode = .christmas
+            }
         }
     }
     
@@ -128,6 +141,12 @@ class SettingsManager {
     var appLocale: Locale? {
         guard let identifier = appLanguage.localeIdentifier else { return nil }
         return Locale(identifier: identifier)
+    }
+
+    var availableThemeModes: [ThemeMode] {
+        ThemeMode.allCases.filter { mode in
+            mode != .lucky || hasLuckyThemeUnlocked
+        }
     }
 
     var effectiveLanguageCode: String {
@@ -198,6 +217,9 @@ class SettingsManager {
         if UserDefaults.standard.object(forKey: "themeMode") == nil {
             themeMode = .christmas
         }
+        if UserDefaults.standard.object(forKey: "hasLuckyThemeUnlocked") == nil {
+            hasLuckyThemeUnlocked = false
+        }
         if UserDefaults.standard.object(forKey: "isMusicEnabled") == nil {
             isMusicEnabled = true
         }
@@ -214,6 +236,9 @@ class SettingsManager {
         if !isDirtyModeAvailable {
             shouldGuarro = false
         }
+        if themeMode == .lucky && !hasLuckyThemeUnlocked {
+            themeMode = .christmas
+        }
     }
 
     private func systemLanguageCode() -> String {
@@ -225,12 +250,20 @@ class SettingsManager {
         let identifier = Locale.autoupdatingCurrent.identifier.lowercased()
         return String(identifier.prefix(2))
     }
+
+    func unlockLuckyTheme() {
+        hasLuckyThemeUnlocked = true
+    }
 }
 
 struct SettingsView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var settings = SettingsManager.shared
     @StateObject private var audioManager = AudioPlayerManager.shared
+
+    private var resolvedLocale: Locale {
+        settings.appLocale ?? .autoupdatingCurrent
+    }
 
     var body: some View {
         Form {
@@ -269,11 +302,11 @@ struct SettingsView: View {
             }
             Section(header: Text("settings.section.theme")) {
                 Picker("settings.theme", selection: $settings.themeMode) {
-                    ForEach(ThemeMode.allCases) { mode in
+                    ForEach(settings.availableThemeModes) { mode in
                         Text(LocalizedStringKey(mode.displayNameKey)).tag(mode)
                     }
                 }
-                .pickerStyle(.segmented)
+                .pickerStyle(.menu)
             }
             Section(header: Text("settings.section.music")) {
                 Toggle("settings.music", isOn: $settings.isMusicEnabled)
@@ -301,6 +334,8 @@ struct SettingsView: View {
             .frame(maxWidth: .infinity)
         }
         .padding()
+        .environment(\.locale, resolvedLocale)
+        .id(settings.effectiveLanguageCode)
         #if os(macOS)
         .frame(minWidth: 340)
         #endif

@@ -4,6 +4,7 @@ enum ThemeMode: String, CaseIterable, Identifiable {
     case auto
     case classic
     case christmas
+    case lucky
 
     var id: String { rawValue }
 
@@ -12,6 +13,7 @@ enum ThemeMode: String, CaseIterable, Identifiable {
         case .auto: return "theme.auto"
         case .classic: return "theme.classic"
         case .christmas: return "theme.christmas"
+        case .lucky: return "theme.lucky"
         }
     }
 }

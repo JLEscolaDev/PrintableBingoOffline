@@ -478,6 +478,8 @@ class BingoViewModel: NSObject, ObservableObject, AVAudioPlayerDelegate, AVSpeec
         switch theme {
         case .christmas:
             return ["🎄", "⭐️", "⛄️", "🎁", "❄️"]
+        case .lucky:
+            return ["☕️", "🍀", "🏆", "💰", "✨"]
         default:
             return ["●", "○", "◆", "■", "▲"]
         }
@@ -518,10 +520,28 @@ class BingoViewModel: NSObject, ObservableObject, AVAudioPlayerDelegate, AVSpeec
         let iconFontSize = min(rect.width, rect.height) * 0.6
         #if canImport(UIKit)
         let font = UIFont.systemFont(ofSize: iconFontSize)
-        let color: UIColor = theme == .christmas ? UIColor.red.withAlphaComponent(0.5) : UIColor.black.withAlphaComponent(0.25)
+        let color: UIColor = {
+            switch theme {
+            case .christmas:
+                return UIColor.red.withAlphaComponent(0.5)
+            case .lucky:
+                return UIColor.systemYellow.withAlphaComponent(0.55)
+            default:
+                return UIColor.black.withAlphaComponent(0.25)
+            }
+        }()
         #else
         let font = NSFont.systemFont(ofSize: iconFontSize)
-        let color: NSColor = theme == .christmas ? NSColor.red.withAlphaComponent(0.5) : NSColor.black.withAlphaComponent(0.25)
+        let color: NSColor = {
+            switch theme {
+            case .christmas:
+                return NSColor.red.withAlphaComponent(0.5)
+            case .lucky:
+                return NSColor.systemYellow.withAlphaComponent(0.55)
+            default:
+                return NSColor.black.withAlphaComponent(0.25)
+            }
+        }()
         #endif
         let attributes: [NSAttributedString.Key: Any] = [
             .font: font,

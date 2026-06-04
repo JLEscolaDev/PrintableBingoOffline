@@ -15,6 +15,51 @@
   ],
   "products" : [
     {
+      "displayPrice" : "1.50",
+      "familyShareable" : false,
+      "internalID" : "SUPPORT_COFFEE",
+      "localizations" : [
+        {
+          "description" : "Apoyo voluntario al proyecto",
+          "displayName" : "Invítame a un café",
+          "locale" : "es_ES"
+        }
+      ],
+      "productID" : "com.printablebingo.support.coffee",
+      "referenceName" : "Support Coffee",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "4.99",
+      "familyShareable" : false,
+      "internalID" : "SUPPORT_BREAKFAST",
+      "localizations" : [
+        {
+          "description" : "Apoyo voluntario al proyecto",
+          "displayName" : "Un desayuno",
+          "locale" : "es_ES"
+        }
+      ],
+      "productID" : "com.printablebingo.support.breakfast",
+      "referenceName" : "Support Breakfast",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "10.00",
+      "familyShareable" : false,
+      "internalID" : "SUPPORT_PROJECT",
+      "localizations" : [
+        {
+          "description" : "Apoyo voluntario al proyecto",
+          "displayName" : "Apoyar el proyecto",
+          "locale" : "es_ES"
+        }
+      ],
+      "productID" : "com.printablebingo.support.project",
+      "referenceName" : "Support Project",
+      "type" : "Consumable"
+    },
+    {
       "displayPrice" : "14.99",
       "familyShareable" : false,
       "internalID" : "BINGO_PRO_LIFETIME",
