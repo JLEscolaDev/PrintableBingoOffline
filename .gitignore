@@ -33,6 +33,8 @@ DerivedData/
 .deriveddata/
 .deriveddata-*/
 xcuserdata/
+**/xcuserdata/
 *.xcuserstate
 *.xcscmblueprint
 .swiftpm/xcode/package.xcworkspace/xcuserdata/
+.itools-terminal/
